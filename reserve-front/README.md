@@ -9,4 +9,7 @@
 
 1. Prettier
 2. Rainbow Brackets
-3. ESLint
+3. ESLint (airbnb)
+  * npm info "eslint-config-airbnb@latest" peerDependencies
+  * npx install-peerdeps --dev eslint-config-airbnb
+  * npm install --legacy-peer-deps
