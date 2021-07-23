@@ -2,8 +2,9 @@
 
 ## Used Image Site
 
-1. 코레일 로고
+1. 코레일리 로고(코레일 로고에서 저작권 문제로 변경)
 2. https://pixabay.com/
+
 
 ## Used Library
 
