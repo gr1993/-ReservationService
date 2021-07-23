@@ -28,6 +28,7 @@ module.exports = {
 	],
 	"rules": {
 		"no-use-before-define": "off",
+		"no-unused-expressions": "off",
 		"@typescript-eslint/no-use-before-define": ["error"],
 		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", "ts", "tsx"] }],
 		"import/extensions": [

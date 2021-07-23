@@ -1,11 +1,17 @@
 # 프로젝트 구축을 위해 사용한 것들
 
-## 사용한 라이브러리
+## Used Image Site
+
+1. 코레일 로고
+2. https://pixabay.com/
+
+## Used Library
 
 1. create-react-app
+2. styled-components
 
 
-## 사용한 VS CODE PLUGIN
+## Used Visual Studio Code Plugin
 
 1. Prettier
 2. Rainbow Brackets
