@@ -28,6 +28,7 @@ module.exports = {
 	],
 	"rules": {
 		'linebreak-style': ["error", "windows"],
+		'react/prop-types': "off",
 		"no-use-before-define": "off",
 		"no-unused-expressions": "off",
 		"@typescript-eslint/no-use-before-define": ["error"],
