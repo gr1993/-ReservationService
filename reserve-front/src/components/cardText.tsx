@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledMainDiv = styled.div`
-  padding: 10px;
-  height: calc(100% - 20px);
+  padding: 15px;
+  height: calc(100% - 30px);
 `;
 const StyledTopDiv = styled.div`
   color: #fff;
@@ -11,7 +11,7 @@ const StyledTopDiv = styled.div`
   font-weight: bold;
 `;
 const StyledBottonDiv = styled.div`
-  margin-top: 30px;
+  margin-top: 35px;
   color: #fff;
   font-size: 0.8em;
   font-weight: 300;

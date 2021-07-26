@@ -8,7 +8,7 @@ import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import CardText from './cardText';
 
 const width = '360px';
-const height = '120px';
+const height = '130px';
 
 interface Props {
   title: string;
@@ -72,7 +72,10 @@ const CustomCard: React.FC<Props> = ({
           timeText={timeText}
         />
       </Grid>
-      <Grid item xs={4}>
+      <Grid
+        item
+        xs={4}
+      >
         {renderIcon(icon)}
       </Grid>
     </Grid>
