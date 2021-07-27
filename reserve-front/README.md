@@ -1,9 +1,10 @@
 # 프로젝트 구축을 위해 사용한 것들
 
-## Used Image Site
+## Used Site
 
-1. 코레일리 로고(코레일 로고에서 저작권 문제로 변경)
-2. https://pixabay.com/
+1. 코레일리 로고 (코레일 로고에서 저작권 문제로 변경)
+2. https://pixabay.com/ (이미지)
+3. https://color.adobe.com/ko/create/color-wheel (색조합)
 
 
 ## Used Library
@@ -20,9 +21,3 @@
   * npm info "eslint-config-airbnb@latest" peerDependencies
   * npx install-peerdeps --dev eslint-config-airbnb
   * npm install --legacy-peer-deps
-
-
-## Used Site
-
-1. 색조합
-  * https://color.adobe.com/ko/create/color-wheel
