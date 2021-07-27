@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Grid, Button, StylesProvider } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const StyledImg = styled.img`
   height: 36px;
@@ -21,7 +22,9 @@ function Navigator(): JSX.Element {
             justifyContent="flex-start"
             alignItems="flex-start"
           >
-            <StyledImg alt="logo" src="img/logo.png" />
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <StyledImg alt="logo" src="img/logo.png" />
+            </Link>
           </Grid>
         </Grid>
         <Grid item xs={6}>
@@ -32,7 +35,9 @@ function Navigator(): JSX.Element {
             alignItems="flex-start"
           >
             <StyledButtion variant="outlined">회원가입</StyledButtion>
-            <StyledButtion variant="outlined">로그인</StyledButtion>
+            <Link to="/login" style={{ textDecoration: 'none' }}>
+              <StyledButtion variant="outlined">로그인</StyledButtion>
+            </Link>
           </Grid>
         </Grid>
       </Grid>

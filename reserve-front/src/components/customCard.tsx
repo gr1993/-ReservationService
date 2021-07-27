@@ -9,6 +9,11 @@ import CardText from './cardText';
 
 const width = '360px';
 const height = '130px';
+const IconStyleObject = {
+  color: '#fff',
+  width: '100%',
+  height,
+};
 
 interface Props {
   title: string;
@@ -23,21 +28,13 @@ const renderIcon = (name: string) => {
     case 'FlightTakeoff':
       return (
         <FlightTakeoffIcon
-          style={{
-            color: '#fff',
-            width: '100%',
-            height,
-          }}
+          style={IconStyleObject}
         />
       );
     default:
       return (
         <FlightOutlinedIcon
-          style={{
-            color: '#fff',
-            width: '100%',
-            height,
-          }}
+          style={IconStyleObject}
         />
       );
   }

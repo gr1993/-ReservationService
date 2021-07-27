@@ -23,6 +23,11 @@ const StyledIconDiv = styled.div`
   padding: 20px;
   background-color: #fff;
   border-radius: 50%;
+
+  .iconStyle {
+    width: 100%;
+    height: 100%;
+  }
 `;
 const StyledTextDiv = styled.div`
   font-weight: bold;
@@ -33,39 +38,19 @@ const renderIcon = (name: string) => {
   switch (name) {
     case 'reservation':
       return (
-        <ListAltTwoToneIcon
-          style={{
-            width: '100%',
-            height: '100%',
-          }}
-        />
+        <ListAltTwoToneIcon className="iconStyle" />
       );
     case 'time':
       return (
-        <QueryBuilderTwoToneIcon
-          style={{
-            width: '100%',
-            height: '100%',
-          }}
-        />
+        <QueryBuilderTwoToneIcon className="iconStyle" />
       );
     case 'rest':
       return (
-        <ImportantDevicesTwoToneIcon
-          style={{
-            width: '100%',
-            height: '100%',
-          }}
-        />
+        <ImportantDevicesTwoToneIcon className="iconStyle" />
       );
     default:
       return (
-        <NotificationsActiveTwoToneIcon
-          style={{
-            width: '100%',
-            height: '100%',
-          }}
-        />
+        <NotificationsActiveTwoToneIcon className="iconStyle" />
       );
   }
 };
