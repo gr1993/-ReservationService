@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Navigator from './components/navigator';
 import MainPage from './pages/mainPage';
 import LoginPage from './pages/loginPage';
+import RegisterPage from './pages/registerPage';
 import EmptyPage from './pages/emptyPage';
 
 const StyledMainDiv = styled.div`
@@ -34,6 +35,9 @@ function App(): JSX.Element {
             </Route>
             <Route path="/login">
               <LoginPage />
+            </Route>
+            <Route path="/register">
+              <RegisterPage />
             </Route>
             <Route>
               <EmptyPage />

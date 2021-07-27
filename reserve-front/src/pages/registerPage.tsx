@@ -6,11 +6,11 @@ import style from 'styled-components';
 const StyledMainDiv = style.div`
   border-top: 1px solid rgba(190, 190, 190, .5);
 `;
-const StyledLoginDiv = style.div`
+const StyledRegisterDiv = style.div`
   margin: 80px auto;
   padding: 0px 30px 30px 30px;
   width: 400px;
-  height: 430px;
+  height: 570px;
   border: 1px solid rgba(190, 190, 190, .5);
   border-radius: 5px;
 
@@ -20,7 +20,7 @@ const StyledLoginDiv = style.div`
     height: 80px;
   }
   .ToginText {
-    margin-left: 160px;
+    margin-left: 150px;
     margin-bottom: 30px;
     font-weight: bold;
     font-size: 1.5em;
@@ -38,16 +38,17 @@ const StyledLoginDiv = style.div`
   }
 `;
 
-const LoginPage = (): JSX.Element => (
+const RegisterPage = (): JSX.Element => (
   <StyledMainDiv>
-    <StyledLoginDiv>
+    <StyledRegisterDiv>
       <img alt="logo" src="img/logo.png" />
-      <div className="ToginText">로그인</div>
+      <div className="ToginText">회원가입</div>
       <TextField
         className="TextFieldStyle"
         id="id"
         label="아이디"
         variant="outlined"
+        size="small"
       />
       <TextField
         className="TextFieldStyle"
@@ -56,12 +57,36 @@ const LoginPage = (): JSX.Element => (
         variant="outlined"
         type="password"
         autoComplete="current-password"
+        size="small"
       />
-      <Button className="ButtonStyle" variant="contained" color="primary">
-        로그인
+      <TextField
+        className="TextFieldStyle"
+        id="password"
+        label="비밀번호 확인"
+        variant="outlined"
+        type="password"
+        autoComplete="current-password"
+        size="small"
+      />
+      <TextField
+        className="TextFieldStyle"
+        id="id"
+        label="성함"
+        variant="outlined"
+        size="small"
+      />
+      <TextField
+        className="TextFieldStyle"
+        id="id"
+        label="휴대폰 번호"
+        variant="outlined"
+        size="small"
+      />
+      <Button className="ButtonStyle" variant="contained" color="secondary">
+        가입하기
       </Button>
-    </StyledLoginDiv>
+    </StyledRegisterDiv>
   </StyledMainDiv>
 );
 
-export default LoginPage;
+export default RegisterPage;

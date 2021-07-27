@@ -34,7 +34,9 @@ function Navigator(): JSX.Element {
             justifyContent="flex-end"
             alignItems="flex-start"
           >
-            <StyledButtion variant="outlined">회원가입</StyledButtion>
+            <Link to="/register" style={{ textDecoration: 'none' }}>
+              <StyledButtion variant="outlined">회원가입</StyledButtion>
+            </Link>
             <Link to="/login" style={{ textDecoration: 'none' }}>
               <StyledButtion variant="outlined">로그인</StyledButtion>
             </Link>
