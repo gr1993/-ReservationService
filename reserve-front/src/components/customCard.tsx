@@ -20,7 +20,7 @@ interface Props {
   text: string;
   timeText: string;
   icon: string;
-  color?: string;
+  color: string;
 }
 
 const renderIcon = (name: string) => {
@@ -41,13 +41,13 @@ const renderIcon = (name: string) => {
 };
 
 const CustomCard: React.FC<Props> = ({
-  title, text, timeText, icon, color = '#35B2E8',
+  title, text, timeText, icon, color,
 }): JSX.Element => (
   <div
     style={{
       width,
       height,
-      backgroundColor: color,
+      backgroundColor: color === undefined ? '#35B2E8' : color,
     }}
   >
     <Grid
