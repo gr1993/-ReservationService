@@ -1,23 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
-import { Member } from './entities/member.entity';
+import { Member } from './entity/member.entity';
 
 @Injectable()
 export class MemberService {
-  constructor(private connection: Connection) {}
+  constructor(
+    @InjectRepository(Member) private memberRepository: Repository<Member>,
+  ) {}
 
   async create(createMemberDto: CreateMemberDto) {
     const member = new Member();
     member.id = createMemberDto.id;
     member.password = createMemberDto.password;
-    member.name = createMemberDto.password;
+    member.name = createMemberDto.name;
     member.mobile = createMemberDto.mobile;
 
-    const memberRepository = this.connection.getRepository(Member);
-
-    await memberRepository.save(member);
+    await this.memberRepository.save(member);
     return member.srl;
   }
 

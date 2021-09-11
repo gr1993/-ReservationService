@@ -3,23 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MemberModule } from './member/member.module';
-import { Member } from './member/entities/member.entity';
+import config from '../ormconfig';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'ys275043!@',
-      database: 'reservation',
-      entities: [Member],
-      synchronize: true,
-      logging: 'all',
-    }),
-    MemberModule,
-  ],
+  imports: [TypeOrmModule.forRoot(config), MemberModule],
   controllers: [AppController],
   providers: [AppService],
 })
