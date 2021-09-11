@@ -16,6 +16,7 @@ import { Member } from './member/entities/member.entity';
       database: 'reservation',
       entities: [Member],
       synchronize: true,
+      logging: 'all',
     }),
     MemberModule,
   ],

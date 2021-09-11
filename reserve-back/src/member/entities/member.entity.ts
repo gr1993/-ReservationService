@@ -19,7 +19,7 @@ export class Member {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   mobile: string;
 
   @CreateDateColumn()

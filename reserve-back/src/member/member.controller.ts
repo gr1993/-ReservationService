@@ -5,8 +5,10 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
+  Res,
+  HttpStatus,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
@@ -16,13 +18,13 @@ export class MemberController {
   constructor(private readonly memberService: MemberService) {}
 
   @Post()
-  create(@Body() createMemberDto: CreateMemberDto) {
-    return this.memberService.create(createMemberDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.memberService.findAll();
+  async create(@Body() createMemberDto: CreateMemberDto, @Res() res: Response) {
+    try {
+      await this.memberService.create(createMemberDto);
+      res.status(HttpStatus.CREATED).send('회원가입에 성공하였습니다.');
+    } catch {
+      res.status(HttpStatus.BAD_REQUEST).send('회원가입에 실패하였습니다.');
+    }
   }
 
   @Get(':id')
@@ -33,10 +35,5 @@ export class MemberController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMemberDto: UpdateMemberDto) {
     return this.memberService.update(+id, updateMemberDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.memberService.remove(+id);
   }
 }

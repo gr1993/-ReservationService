@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common';
+import { Connection } from 'typeorm';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
+import { Member } from './entities/member.entity';
 
 @Injectable()
 export class MemberService {
-  create(createMemberDto: CreateMemberDto) {
-    return 'This action adds a new member';
-  }
+  constructor(private connection: Connection) {}
 
-  findAll() {
-    return `This action returns all member`;
+  async create(createMemberDto: CreateMemberDto) {
+    const member = new Member();
+    member.id = createMemberDto.id;
+    member.password = createMemberDto.password;
+    member.name = createMemberDto.password;
+    member.mobile = createMemberDto.mobile;
+
+    const memberRepository = this.connection.getRepository(Member);
+
+    await memberRepository.save(member);
+    return member.srl;
   }
 
   findOne(id: number) {
@@ -18,9 +27,5 @@ export class MemberService {
 
   update(id: number, updateMemberDto: UpdateMemberDto) {
     return `This action updates a #${id} member`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} member`;
   }
 }
