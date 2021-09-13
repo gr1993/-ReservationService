@@ -24,4 +24,7 @@ export class Member {
 
   @CreateDateColumn()
   create_date: Date;
+
+  @Column()
+  salt: string;
 }

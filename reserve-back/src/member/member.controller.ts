@@ -25,10 +25,10 @@ export class MemberController {
         success: true,
         msg: '회원가입에 성공하였습니다.',
       });
-    } catch {
+    } catch (err) {
       res.status(HttpStatus.BAD_REQUEST).send({
         success: false,
-        msg: '회원가입에 실패하였습니다.',
+        msg: err.message,
       });
     }
   }
