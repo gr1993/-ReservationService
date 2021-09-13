@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import style from 'styled-components';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { memberRegister } from '../state/actions/memberAction';
 
 const StyledMainDiv = style.div`
   border-top: 1px solid rgba(190, 190, 190, .5);
@@ -64,15 +64,15 @@ const RegisterPage = (): JSX.Element => {
     } else if (password !== passwordCheck) {
       alert('패스워드와 확인이 일치하지 않습니다.');
     } else {
-      const response = await axios.post('http://localhost:8080/member', {
+      const returnValue = await memberRegister({
         id,
         password,
         name,
         mobile,
       });
 
-      alert(response.data.msg);
-      if (response.data.success) {
+      alert(returnValue.msg);
+      if (returnValue.success) {
         history.push('/login');
       }
     }
