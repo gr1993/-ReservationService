@@ -38,6 +38,7 @@ function MainPage(): JSX.Element {
           text="코레일리 멤버십 회원만 예약 가능"
           timeText="이용시간 : 9.8~9.9 07:00~13:00"
           icon="FlightTakeoff"
+          color="#35B2E8"
         />
         <br />
         <CustomCard
