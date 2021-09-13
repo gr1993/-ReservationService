@@ -43,7 +43,8 @@ module.exports = {
 				tsx: 'never',
 				json: 'never'
 			}
-		]
+		],
+		'no-alert': "off"
 	},
 	"settings": {
 		"import/resolver": {

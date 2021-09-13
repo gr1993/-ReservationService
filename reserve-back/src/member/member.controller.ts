@@ -21,9 +21,15 @@ export class MemberController {
   async create(@Body() createMemberDto: CreateMemberDto, @Res() res: Response) {
     try {
       await this.memberService.create(createMemberDto);
-      res.status(HttpStatus.CREATED).send('회원가입에 성공하였습니다.');
+      res.status(HttpStatus.CREATED).send({
+        success: true,
+        msg: '회원가입에 성공하였습니다.',
+      });
     } catch {
-      res.status(HttpStatus.BAD_REQUEST).send('회원가입에 실패하였습니다.');
+      res.status(HttpStatus.BAD_REQUEST).send({
+        success: false,
+        msg: '회원가입에 실패하였습니다.',
+      });
     }
   }
 
