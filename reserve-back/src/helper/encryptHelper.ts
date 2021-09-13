@@ -77,3 +77,7 @@ export async function encrypt(
     encryptedText: key.toString('base64'),
   };
 }
+
+export const getSaltBuffer = (saltString: string): Buffer => {
+  return Buffer.from(saltString, 'base64');
+};
