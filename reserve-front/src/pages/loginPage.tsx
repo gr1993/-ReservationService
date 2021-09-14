@@ -60,7 +60,6 @@ const LoginPage = (): JSX.Element => {
         password,
       });
 
-      console.log(returnValue);
       alert(returnValue.msg);
       if (returnValue.success) {
         dispatch({
