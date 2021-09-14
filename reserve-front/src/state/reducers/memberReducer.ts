@@ -7,12 +7,12 @@ interface Action {
 
 interface InitialState {
   isLogin: boolean;
-  token: string | null;
+  accessToken: string | null;
 }
 
 const initialState: InitialState = {
   isLogin: false,
-  token: null,
+  accessToken: null,
 };
 
 const memberReducer = (state: InitialState = initialState, action: Action): InitialState => {
@@ -21,7 +21,7 @@ const memberReducer = (state: InitialState = initialState, action: Action): Init
       return {
         ...state,
         isLogin: true,
-        token: action.payload,
+        accessToken: action.payload,
       };
     case LOGIN_FAIL:
       return {

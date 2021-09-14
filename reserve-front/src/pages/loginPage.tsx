@@ -65,7 +65,7 @@ const LoginPage = (): JSX.Element => {
       if (returnValue.success) {
         dispatch({
           type: LOGIN_SUCCESS,
-          payload: returnValue.data.token,
+          payload: returnValue.data.accessToken,
         });
         history.push('/');
       }

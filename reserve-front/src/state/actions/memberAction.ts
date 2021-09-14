@@ -27,11 +27,11 @@ export const memberRegister = async (member: MemberRegisterType): Promise<Respon
 
 export const memberLogin = async (member: memberLoginType): Promise<ResponseReturnType> => {
   try {
-    const response = await axios.post(`${DOMAIN}/member/login`, member);
+    const response = await axios.post(`${DOMAIN}/auth/login`, member);
 
     return {
       data: {
-        token: response.data.data.token,
+        accessToken: response.data.data.access_token,
       },
       success: response.data.success,
       msg: response.data.msg,
