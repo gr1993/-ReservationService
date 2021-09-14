@@ -1,47 +1,28 @@
 import axios from 'axios';
 import { MemberRegisterType, memberLoginType } from './memberActionType';
-
-interface ResponseReturnType {
-  data?: any;
-  success: boolean;
-  msg?: string;
-}
+import { axiosRequest, ResponseReturnType } from '../../helper/axiosHelper';
 
 const DOMAIN = 'http://localhost:8080';
 
 export const memberRegister = async (member: MemberRegisterType): Promise<ResponseReturnType> => {
-  try {
-    const response = await axios.post(`${DOMAIN}/member`, member);
+  const response = await axiosRequest(() => axios.post(`${DOMAIN}/member`, member));
 
-    return {
-      success: response.data.success,
-      msg: response.data.msg,
-    };
-  } catch (err) {
-    return {
-      success: false,
-      msg: '서버와 연결에 실패하였습니다.',
-    };
-  }
+  return {
+    success: response.success,
+    msg: response.msg,
+  };
 };
 
 export const memberLogin = async (member: memberLoginType): Promise<ResponseReturnType> => {
-  try {
-    const response = await axios.post(`${DOMAIN}/auth/login`, member);
+  const response = await axiosRequest(() => axios.post(`${DOMAIN}/auth/login`, member));
 
-    return {
-      data: {
-        accessToken: response.data.data.access_token,
-      },
-      success: response.data.success,
-      msg: response.data.msg,
-    };
-  } catch (err) {
-    return {
-      success: false,
-      msg: '서버와 연결에 실패하였습니다.',
-    };
-  }
+  return {
+    data: {
+      accessToken: response.data && response.data.access_token,
+    },
+    success: response.success,
+    msg: response.msg,
+  };
 };
 
 export default {};
