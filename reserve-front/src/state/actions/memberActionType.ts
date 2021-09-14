@@ -8,7 +8,13 @@ export interface MemberRegisterType {
   mobile: string;
 }
 
-export interface memberLoginType {
+export interface MemberLoginType {
   id: string;
   password: string;
+}
+
+export interface MemberUpdateType {
+  password?: string;
+  name: string;
+  mobile: string;
 }

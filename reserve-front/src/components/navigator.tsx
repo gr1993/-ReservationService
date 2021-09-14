@@ -38,12 +38,12 @@ function Navigator(): JSX.Element {
         </Grid>
         <Grid item xs={6}>
           <Grid container direction="row" justifyContent="flex-end" alignItems="flex-start">
-            {memberReducer.isLogin ? (
+            {memberReducer.accessToken ? (
               <div>
                 <Link to="/check" style={{ textDecoration: 'none' }}>
                   <StyledButtion variant="outlined">예매확인</StyledButtion>
                 </Link>
-                <Link to="/member/info" style={{ textDecoration: 'none' }}>
+                <Link to="/myinfo" style={{ textDecoration: 'none' }}>
                   <StyledButtion variant="outlined">정보수정</StyledButtion>
                 </Link>
                 <Link to="/" style={{ textDecoration: 'none' }} onClick={logout}>

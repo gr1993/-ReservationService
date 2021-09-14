@@ -23,7 +23,7 @@ const StyledLoginDiv = style.div`
     width: 260px;
     height: 80px;
   }
-  .ToginText {
+  .LoginText {
     margin-left: 160px;
     margin-bottom: 30px;
     font-weight: bold;
@@ -75,7 +75,7 @@ const LoginPage = (): JSX.Element => {
     <StyledMainDiv>
       <StyledLoginDiv>
         <img alt="logo" src="img/logo.png" />
-        <div className="ToginText">로그인</div>
+        <div className="LoginText">로그인</div>
         <TextField
           className="TextFieldStyle"
           id="id"
