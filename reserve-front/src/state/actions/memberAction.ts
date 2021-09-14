@@ -40,7 +40,10 @@ export const memberSelect = async (accessToken: string): Promise<ResponseReturnT
 };
 
 // eslint-disable-next-line max-len
-export const memberUpdate = async (accessToken: string, member: MemberUpdateType): Promise<ResponseReturnType> => {
+export const memberUpdate = async (
+  accessToken: string,
+  member: MemberUpdateType
+): Promise<ResponseReturnType> => {
   const header = {
     headers: { Authorization: `Bearer ${accessToken}` },
   };

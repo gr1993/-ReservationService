@@ -1,7 +1,6 @@
 import React from 'react';
-import {
-  Grid,
-} from '@material-ui/core';
+import styled from 'styled-components';
+import { Grid } from '@material-ui/core';
 import FlightOutlinedIcon from '@material-ui/icons/FlightOutlined';
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 
@@ -9,6 +8,12 @@ import CardText from './cardText';
 
 const width = '360px';
 const height = '130px';
+const StyledMainDiv = styled.div`
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+  }
+`;
 const IconStyleObject = {
   color: '#fff',
   width: '100%',
@@ -21,29 +26,28 @@ interface Props {
   timeText: string;
   icon: string;
   color: string;
+  onClickEvent: () => void;
 }
 
 const renderIcon = (name: string) => {
   switch (name) {
     case 'FlightTakeoff':
-      return (
-        <FlightTakeoffIcon
-          style={IconStyleObject}
-        />
-      );
+      return <FlightTakeoffIcon style={IconStyleObject} />;
     default:
-      return (
-        <FlightOutlinedIcon
-          style={IconStyleObject}
-        />
-      );
+      return <FlightOutlinedIcon style={IconStyleObject} />;
   }
 };
 
 const CustomCard: React.FC<Props> = ({
-  title, text, timeText, icon, color,
+  title,
+  text,
+  timeText,
+  icon,
+  color,
+  onClickEvent,
 }): JSX.Element => (
-  <div
+  <StyledMainDiv
+    onClick={onClickEvent}
     style={{
       width,
       height,
@@ -63,20 +67,13 @@ const CustomCard: React.FC<Props> = ({
           height: '100%',
         }}
       >
-        <CardText
-          title={title}
-          text={text}
-          timeText={timeText}
-        />
+        <CardText title={title} text={text} timeText={timeText} />
       </Grid>
-      <Grid
-        item
-        xs={4}
-      >
+      <Grid item xs={4}>
         {renderIcon(icon)}
       </Grid>
     </Grid>
-  </div>
+  </StyledMainDiv>
 );
 
 export default CustomCard;

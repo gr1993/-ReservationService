@@ -15,6 +15,10 @@ const StyledMainDiv = styled.div`
   font-size: 12px;
   display: inline-block;
   margin: 0px 67px;
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+  }
 `;
 
 const StyledIconDiv = styled.div`
@@ -37,39 +41,31 @@ const StyledTextDiv = styled.div`
 const renderIcon = (name: string) => {
   switch (name) {
     case 'reservation':
-      return (
-        <ListAltTwoToneIcon className="iconStyle" />
-      );
+      return <ListAltTwoToneIcon className="iconStyle" />;
     case 'time':
-      return (
-        <QueryBuilderTwoToneIcon className="iconStyle" />
-      );
+      return <QueryBuilderTwoToneIcon className="iconStyle" />;
     case 'rest':
-      return (
-        <ImportantDevicesTwoToneIcon className="iconStyle" />
-      );
+      return <ImportantDevicesTwoToneIcon className="iconStyle" />;
     default:
-      return (
-        <NotificationsActiveTwoToneIcon className="iconStyle" />
-      );
+      return <NotificationsActiveTwoToneIcon className="iconStyle" />;
   }
 };
 
 interface Props {
-  icon: string,
-  text: string,
+  icon: string;
+  text: string;
 }
 
+const clickEvent = () => {
+  alert('준비중입니다....');
+};
+
 const CircleCard: React.FC<Props> = ({ icon, text }): JSX.Element => (
-  <StyledMainDiv>
-    <StyledIconDiv>
-      {renderIcon(icon)}
-    </StyledIconDiv>
+  <StyledMainDiv onClick={clickEvent}>
+    <StyledIconDiv>{renderIcon(icon)}</StyledIconDiv>
     추석항공권
     <br />
-    <StyledTextDiv>
-      {text}
-    </StyledTextDiv>
+    <StyledTextDiv>{text}</StyledTextDiv>
   </StyledMainDiv>
 );
 

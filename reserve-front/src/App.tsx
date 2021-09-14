@@ -13,14 +13,13 @@ const StyledMainDiv = styled.div`
   width: 100%;
   max-width: 1024px;
   @media only screen and (min-width: 1024px) {
-    margin:0px auto;
+    margin: 0px auto;
   }
 `;
 const StyledHeaderDiv = styled.div`
   margin: 10px 0px;
 `;
-const StyledContentDiv = styled.div`
-`;
+const StyledContentDiv = styled.div``;
 
 function App(): JSX.Element {
   return (

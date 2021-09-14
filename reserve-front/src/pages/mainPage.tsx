@@ -6,9 +6,9 @@ import CircleCard from '../components/circleCard';
 const StyledMainDiv = styled.div`
   width: 100%;
   height: 450px;
-  background-image:url('img/plane-4301615_1280.png');
-  background-size:cover;
-  background-repeat:no-repeat;
+  background-image: url('img/plane-4301615_1280.png');
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 const StyledCardDiv = styled.div`
   padding: 40px 0px 0px 640px;
@@ -22,12 +22,16 @@ const StyledFooterDiv = styled.div`
   padding: 15px;
   width: calc(100% - 90px);
   height: 140px;
-  border: 2px solid rgba(190, 190, 190, .5);
+  border: 2px solid rgba(190, 190, 190, 0.5);
 `;
 const StyledCopyrightDiv = styled.div`
   font-size: 0.8em;
   margin: 5px 30px;
 `;
+
+const reservationEvent = () => {
+  alert('예매 대기열로~');
+};
 
 function MainPage(): JSX.Element {
   return (
@@ -39,6 +43,7 @@ function MainPage(): JSX.Element {
           timeText="이용시간 : 9.8~9.9 07:00~13:00"
           icon="FlightTakeoff"
           color="#35B2E8"
+          onClickEvent={reservationEvent}
         />
         <br />
         <CustomCard
@@ -47,25 +52,16 @@ function MainPage(): JSX.Element {
           timeText="이용시간 : 평상시"
           icon="default"
           color="#494AE6"
+          onClickEvent={() => {
+            alert('준비중입니다...');
+          }}
         />
       </StyledCardDiv>
       <StyledCircleDiv>
-        <CircleCard
-          icon="default"
-          text="공지사항"
-        />
-        <CircleCard
-          icon="reservation"
-          text="예약방법안내"
-        />
-        <CircleCard
-          icon="time"
-          text="항공시각조회"
-        />
-        <CircleCard
-          icon="rest"
-          text="잔여석현황"
-        />
+        <CircleCard icon="default" text="공지사항" />
+        <CircleCard icon="reservation" text="예약방법안내" />
+        <CircleCard icon="time" text="항공시각조회" />
+        <CircleCard icon="rest" text="잔여석현황" />
       </StyledCircleDiv>
       <StyledFooterDiv>
         <div style={{ color: 'blue' }}>
@@ -74,7 +70,8 @@ function MainPage(): JSX.Element {
         <p style={{ lineHeight: '25px' }}>
           1. 추석 항공권 예약 전용 홈페이지는 Windows 운영체제(OS)와 크롬에 최적화 되어 있습니다.
           <br />
-          2. Windows XP의 경우 단종, 보안 업그레이드 지원 중단 등의 사유로 본예약시스템이 정상적으로 작동하지 않을 수 있습니다.
+          2. Windows XP의 경우 단종, 보안 업그레이드 지원 중단 등의 사유로 본예약시스템이 정상적으로
+          작동하지 않을 수 있습니다.
           <br />
           3. 예약 전용 화면은 하나의 인터넷창에서만 접속할 수 있습니다.
           <br />

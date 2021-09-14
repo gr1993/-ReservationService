@@ -134,7 +134,12 @@ const InfoPage = (): JSX.Element => {
           value={mobile}
           onChange={onChangeMobile}
         />
-        <Button className="ButtonStyle" variant="contained" color="primary" onClick={memberInfoModify}>
+        <Button
+          className="ButtonStyle"
+          variant="contained"
+          color="primary"
+          onClick={memberInfoModify}
+        >
           변경하기
         </Button>
       </StyledInfoDiv>

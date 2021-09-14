@@ -30,15 +30,9 @@ interface Props {
 
 const CardText: React.FC<Props> = ({ title, text, timeText }): JSX.Element => (
   <StyledMainDiv>
-    <StyledTopDiv>
-      {title}
-    </StyledTopDiv>
-    <StyledBottonDiv>
-      {text}
-    </StyledBottonDiv>
-    <StyledFooterDiv>
-      {timeText}
-    </StyledFooterDiv>
+    <StyledTopDiv>{title}</StyledTopDiv>
+    <StyledBottonDiv>{text}</StyledBottonDiv>
+    <StyledFooterDiv>{timeText}</StyledFooterDiv>
   </StyledMainDiv>
 );
 

@@ -17,6 +17,7 @@ module.exports = {
 	},
 	"plugins": [
 		"react",
+		"prettier",
 		"@typescript-eslint"
 	],
 	"extends": [
@@ -24,6 +25,7 @@ module.exports = {
 		"airbnb/hooks",
 		// "eslint:recommended",
 		// "plugin:react/recommended",
+		"plugin:prettier/recommended",
 		"plugin:@typescript-eslint/recommended"
 	],
 	"rules": {
@@ -43,6 +45,12 @@ module.exports = {
 				tsx: 'never',
 				json: 'never'
 			}
+		],
+		'prettier/prettier': [
+			'error',
+			{
+				endOfLine: 'auto',
+			},
 		],
 		'no-alert': "off"
 	},
