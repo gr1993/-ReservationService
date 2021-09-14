@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL } from '../actions/memberActionType';
+import { LOGIN_SUCCESS, LOGOUT_SUCCESS } from '../actions/memberActionType';
 
 interface Action {
   type: string;
@@ -23,10 +23,9 @@ const memberReducer = (state: InitialState = initialState, action: Action): Init
         isLogin: true,
         accessToken: action.payload,
       };
-    case LOGIN_FAIL:
+    case LOGOUT_SUCCESS:
       return {
-        ...state,
-        isLogin: false,
+        ...initialState,
       };
     default:
       return state;
