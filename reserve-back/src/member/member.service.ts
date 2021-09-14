@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { Member } from './entity/member.entity';
 import { encrypt, EncryptResult } from '../helper/encryptHelper';
+import { UpdateMemberDto } from './dto/update-member.dto';
 
 @Injectable()
 export class MemberService {
@@ -37,5 +38,25 @@ export class MemberService {
 
     await this.memberRepository.save(newMember);
     return newMember.srl;
+  }
+
+  async update(memberId: string, updateMemberDto: UpdateMemberDto) {
+    const member = await this.getMember(memberId);
+    if (!member) {
+      throw Error('존재하지 않는 아이디입니다.');
+    }
+
+    const updateProperty = {};
+    if (updateMemberDto.password) {
+      const encryptResult: EncryptResult = await encrypt(
+        updateMemberDto.password,
+      );
+      updateProperty['password'] = encryptResult.encryptedText;
+      updateProperty['salt'] = encryptResult.salt.toString('base64');
+    }
+    updateProperty['name'] = updateMemberDto.name;
+    updateProperty['mobile'] = updateMemberDto.mobile;
+
+    await this.memberRepository.update({ id: member.id }, updateProperty);
   }
 }
