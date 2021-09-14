@@ -1,9 +1,13 @@
+/* eslint-disable */
 import { createStore } from 'redux';
 
 import rootReducer from './reducers';
 
-const store = createStore(rootReducer);
+const store = createStore(
+  rootReducer,
+  (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+);
 
-export type RootReducerType = ReturnType<typeof rootReducer>
+export type RootReducerType = ReturnType<typeof rootReducer>;
 
 export default store;
