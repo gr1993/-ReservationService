@@ -1,8 +1,10 @@
+import { Reservation } from 'src/ticket/entities/reservation.entity';
 import {
   Entity,
   Column,
   CreateDateColumn,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -27,4 +29,7 @@ export class Member {
 
   @Column()
   salt: string;
+
+  @OneToMany((type) => Reservation, (reservation) => reservation.member)
+  members: Member[];
 }
