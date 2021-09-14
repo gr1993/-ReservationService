@@ -40,11 +40,12 @@ export class MemberController {
   async getMember(@Req() req, @Res() res: Response) {
     try {
       const member = await this.memberService.getMember(req.user.id);
-      res.status(HttpStatus.CREATED).send({
+
+      res.status(HttpStatus.OK).send({
         data: {
-          ...member,
-          srl: null,
-          salt: null,
+          id: member.id,
+          name: member.name,
+          mobile: member.mobile,
         },
         success: true,
         msg: '정보가 조회되었습니다.',
