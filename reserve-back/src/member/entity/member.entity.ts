@@ -1,4 +1,4 @@
-import { Reservation } from 'src/ticket/entities/reservation.entity';
+import { Reservation } from '../../ticket/entities/reservation.entity';
 import {
   Entity,
   Column,

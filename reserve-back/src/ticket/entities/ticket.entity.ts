@@ -18,22 +18,22 @@ export class Ticket {
   @Column()
   start_airport: string;
 
-  @Column()
+  @Column({ nullable: true })
   end_airport: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ nullable: true })
   start_date: Date;
 
-  @Column({ type: 'float' })
+  @Column({ type: 'float', nullable: true })
   duration_time;
 
-  @Column()
+  @Column({ nullable: true })
   price: number;
 
-  @Column()
+  @Column({ nullable: true })
   count: number;
 
-  @Column()
+  @Column({ nullable: true })
   rest: number;
 
   @CreateDateColumn()
