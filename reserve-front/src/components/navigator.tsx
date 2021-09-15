@@ -40,7 +40,7 @@ function Navigator(): JSX.Element {
           <Grid container direction="row" justifyContent="flex-end" alignItems="flex-start">
             {memberReducer.accessToken ? (
               <div>
-                <Link to="/check" style={{ textDecoration: 'none' }}>
+                <Link to="/reserve" style={{ textDecoration: 'none' }}>
                   <StyledButtion variant="outlined">예매확인</StyledButtion>
                 </Link>
                 <Link to="/myinfo" style={{ textDecoration: 'none' }}>

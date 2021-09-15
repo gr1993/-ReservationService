@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import CustomCard from '../components/customCard';
 import CircleCard from '../components/circleCard';
 
@@ -29,11 +30,13 @@ const StyledCopyrightDiv = styled.div`
   margin: 5px 30px;
 `;
 
-const reservationEvent = () => {
-  alert('예매 대기열로~');
-};
-
 function MainPage(): JSX.Element {
+  const history = useHistory();
+
+  const reservationEvent = () => {
+    history.push('/reserve');
+  };
+
   return (
     <StyledMainDiv>
       <StyledCardDiv>
