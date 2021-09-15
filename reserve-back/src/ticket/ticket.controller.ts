@@ -1,5 +1,6 @@
 import { Controller, Get, HttpStatus, Param, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
+import { SearchTicketDto } from './dto/search-ticket.dto';
 import { TicketService } from './ticket.service';
 
 @Controller('ticket')
@@ -36,6 +37,24 @@ export class TicketController {
         data,
         success: true,
         msg: '조회되었습니다.',
+      });
+    } catch (err) {
+      res.status(HttpStatus.BAD_REQUEST).send({
+        success: false,
+        msg: err.message,
+      });
+    }
+  }
+
+  @Get()
+  async Search(@Query() condition: SearchTicketDto, @Res() res: Response) {
+    try {
+      const [data, count] = await this.ticketService.Search(condition);
+      res.status(HttpStatus.OK).send({
+        data,
+        success: true,
+        msg: '조회되었습니다.',
+        totalCount: count,
       });
     } catch (err) {
       res.status(HttpStatus.BAD_REQUEST).send({

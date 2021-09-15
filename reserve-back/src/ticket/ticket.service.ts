@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getConnection, Repository } from 'typeorm';
+import { getConnection, MoreThanOrEqual, Repository } from 'typeorm';
+import { SearchTicketDto } from './dto/search-ticket.dto';
 import { Code } from './entities/code.entity';
 import { Ticket } from './entities/ticket.entity';
+
+const MAX_PAGE_COUNT = 5;
 
 const createCode = (
   code_type: string,
@@ -64,6 +67,41 @@ export class TicketService {
       .groupBy(type)
       .getRawMany();
     return airports;
+  }
+
+  async Search(condition: SearchTicketDto) {
+    const whereObejct = {
+      rest: MoreThanOrEqual(condition.memberCount),
+    };
+    if (condition.airline) {
+      whereObejct['airline'] = condition.airline;
+    }
+    if (condition.startAirport) {
+      whereObejct['start_airport'] = condition.startAirport;
+    }
+    if (condition.endAirport) {
+      whereObejct['end_airport'] = condition.endAirport;
+    }
+    if (condition.date) {
+      whereObejct['date'] = MoreThanOrEqual(condition.date);
+    }
+
+    return await this.ticketRepository.findAndCount({
+      select: [
+        'srl',
+        'airline',
+        'start_airport',
+        'end_airport',
+        'start_date',
+        'duration_time',
+        'price',
+        'count',
+        'rest',
+      ],
+      where: whereObejct,
+      skip: (condition.pageNumber - 1) * MAX_PAGE_COUNT,
+      take: MAX_PAGE_COUNT,
+    });
   }
 
   async insertSeed(): Promise<void> {
