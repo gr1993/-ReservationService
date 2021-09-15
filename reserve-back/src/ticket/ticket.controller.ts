@@ -1,15 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Query, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { TicketService } from './ticket.service';
-import { CreateTicketDto } from './dto/create-ticket.dto';
-import { UpdateTicketDto } from './dto/update-ticket.dto';
 
 @Controller('ticket')
 export class TicketController {
@@ -20,28 +11,37 @@ export class TicketController {
     return this.ticketService.insertSeed();
   }
 
-  @Post()
-  create(@Body() createTicketDto: CreateTicketDto) {
-    return this.ticketService.create(createTicketDto);
+  @Get('airline')
+  async GetAirlineCode(@Res() res: Response) {
+    try {
+      const data = await this.ticketService.GetAirlineCode();
+      res.status(HttpStatus.OK).send({
+        data,
+        success: true,
+        msg: '조회되었습니다.',
+      });
+    } catch (err) {
+      res.status(HttpStatus.BAD_REQUEST).send({
+        success: false,
+        msg: err.message,
+      });
+    }
   }
 
-  @Get()
-  findAll() {
-    return this.ticketService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ticketService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
-    return this.ticketService.update(+id, updateTicketDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ticketService.remove(+id);
+  @Get('airport/list')
+  async GetAirportList(@Query('type') type: string, @Res() res: Response) {
+    try {
+      const data = await this.ticketService.GetAirportList(type);
+      res.status(HttpStatus.OK).send({
+        data,
+        success: true,
+        msg: '조회되었습니다.',
+      });
+    } catch (err) {
+      res.status(HttpStatus.BAD_REQUEST).send({
+        success: false,
+        msg: err.message,
+      });
+    }
   }
 }

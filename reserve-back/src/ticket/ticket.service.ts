@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getConnection, Repository } from 'typeorm';
-import { CreateTicketDto } from './dto/create-ticket.dto';
-import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { Code } from './entities/code.entity';
 import { Ticket } from './entities/ticket.entity';
 
@@ -49,6 +47,24 @@ export class TicketService {
     @InjectRepository(Code) private codeRepository: Repository<Code>,
     @InjectRepository(Ticket) private ticketRepository: Repository<Ticket>,
   ) {}
+
+  async GetAirlineCode() {
+    return await this.codeRepository.find({
+      select: ['code', 'title'],
+      where: {
+        code_type: '1000',
+      },
+    });
+  }
+
+  async GetAirportList(type: string) {
+    const airports = await this.ticketRepository
+      .createQueryBuilder('ticket')
+      .select(type)
+      .groupBy(type)
+      .getRawMany();
+    return airports;
+  }
 
   async insertSeed(): Promise<void> {
     const queryRunner = getConnection().createQueryRunner();
@@ -381,25 +397,5 @@ export class TicketService {
     } finally {
       await queryRunner.release();
     }
-  }
-
-  create(createTicketDto: CreateTicketDto) {
-    return 'This action adds a new ticket';
-  }
-
-  findAll() {
-    return `This action returns all ticket`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} ticket`;
-  }
-
-  update(id: number, updateTicketDto: UpdateTicketDto) {
-    return `This action updates a #${id} ticket`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} ticket`;
   }
 }
