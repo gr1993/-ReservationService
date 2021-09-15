@@ -1,4 +1,12 @@
-import { Button, FormControl, Grid, makeStyles, MenuItem, Select } from '@material-ui/core';
+import {
+  Button,
+  FormControl,
+  Grid,
+  makeStyles,
+  MenuItem,
+  Select,
+  TextField,
+} from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -16,7 +24,7 @@ const StyledFontDiv = style.div`
   width: 100%;
   height: 100%;
   color: #494AE6;
-  text-align: center;
+  text-align: right;
   line-height: 55px;
 `;
 
@@ -83,11 +91,19 @@ const ReservePage = (): JSX.Element => {
           <CustomField labelText="인원" />
           <CustomField labelText="출발지" />
           <Grid container item xs={3}>
-            <Grid item xs={3}>
+            <Grid item xs={4}>
               <StyledFontDiv>출발일</StyledFontDiv>
             </Grid>
-            <Grid item xs={9}>
-              test
+            <Grid item xs={8}>
+              <TextField
+                style={{ margin: '10px 0px 0px 15px', width: '135px' }}
+                id="date"
+                type="date"
+                defaultValue="2017-05-24"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
             </Grid>
           </Grid>
         </Grid>
@@ -95,16 +111,27 @@ const ReservePage = (): JSX.Element => {
           <CustomField labelText="항공사" />
           <CustomField labelText="도착지" />
           <Grid container item xs={3}>
-            <Grid item xs={3}>
+            <Grid item xs={4}>
               <StyledFontDiv>출발시간</StyledFontDiv>
             </Grid>
-            <Grid item xs={9}>
-              test
+            <Grid item xs={8}>
+              <TextField
+                style={{ margin: '10px 0px 0px 15px', width: '135px' }}
+                id="time"
+                type="time"
+                defaultValue="07:30"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  step: 300, // 5 min
+                }}
+              />
             </Grid>
           </Grid>
           <Grid item xs={3}>
             <Button
-              style={{ margin: '10px 0px 0px 0px' }}
+              style={{ margin: '10px 0px 0px 20px' }}
               className="ButtonStyle"
               variant="contained"
               color="primary"
