@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { DOMAIN, axiosRequest, ResponseReturnType } from '../../helper/axiosHelper';
+import { SearchTicketType } from './ticketActionType';
 
 interface AirlineReturn extends ResponseReturnType {
   data: {
@@ -30,6 +31,20 @@ export const getTicketAirline = async (): Promise<AirlineReturn> => {
 export const getTicketAirport = async (type: string): Promise<StartAirportReturn> => {
   const response = await axiosRequest(() =>
     axios.get(`${DOMAIN}/ticket/airport/list?type=${type}`)
+  );
+
+  return {
+    data: response.data,
+    success: response.success,
+    msg: response.msg,
+  };
+};
+
+export const getTicketData = async (searchParam: SearchTicketType): Promise<ResponseReturnType> => {
+  const response = await axiosRequest(() =>
+    axios.get(`${DOMAIN}/ticket`, {
+      params: searchParam,
+    })
   );
 
   return {

@@ -12,8 +12,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import style from 'styled-components';
+import dateformat from 'dateformat';
 import { RootReducerType } from '../state/store';
-import { getTicketAirline, getTicketAirport } from '../state/actions/ticketAction';
+import { getTicketAirline, getTicketAirport, getTicketData } from '../state/actions/ticketAction';
 
 const StyledMainDiv = style.div`
   margin: 0px auto;
@@ -61,7 +62,7 @@ const columns = [
   { field: 'rest', headerName: '잔여석', width: 100, sortable: false },
 ];
 
-const rows = [
+const dumpRowDatas = [
   {
     id: '1',
     airline: '대한항공',
@@ -166,6 +167,8 @@ const ReservePage = (): JSX.Element => {
   const [startDate, setStartDate] = useState('2021-09-20');
   const [startTime, setStartTime] = useState('09:00');
 
+  const [ticketData, setTicketData] = useState([]);
+
   const getAirlineData = async () => {
     const response = await getTicketAirline();
 
@@ -256,13 +259,61 @@ const ReservePage = (): JSX.Element => {
     setStartTime(event.target.value);
   };
 
-  const searchTicket = () => {
-    console.log(memberCount);
-    console.log(airline);
-    console.log(startAirport);
-    console.log(endAirport);
-    console.log(startDate);
-    console.log(startTime);
+  const searchTicket = async () => {
+    if (!memberCount) {
+      alert('인원을 입력하세요.');
+      return;
+    }
+    if (!startDate) {
+      alert('출발일을 입력하세요.');
+      return;
+    }
+    if (!startTime) {
+      alert('출발시간을 입력하세요.');
+      return;
+    }
+
+    const [year, month, day] = startDate.split('-');
+    const [hour, minute] = startTime.split(':');
+
+    const response = await getTicketData({
+      memberCount: Number(memberCount),
+      airline,
+      startAirport,
+      endAirport,
+      startDate: new Date(
+        Number(year),
+        Number(month) - 1,
+        Number(day),
+        Number(hour),
+        Number(minute)
+      ),
+    });
+
+    if (response.success) {
+      const data = response.data.map((d: any) => {
+        const startDateString = dateformat(d.start_date, 'yyyy-mm-dd');
+        const startTimeString = dateformat(d.start_date, 'hh:MM');
+        let endDate = new Date(d.start_date).getTime();
+        endDate += d.duration_time * 60 * 60 * 1000;
+        const emdTimeString = dateformat(new Date(endDate), 'hh:MM');
+        const priceString = d.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        const restString = `${d.rest}/${d.count}`;
+
+        return {
+          id: d.srl,
+          airline: d.airline,
+          start_airport: d.start_airport,
+          end_airport: d.end_airport,
+          start_date: startDateString,
+          start_time: startTimeString,
+          end_time: emdTimeString,
+          price: priceString,
+          rest: restString,
+        };
+      });
+      setTicketData(data);
+    }
   };
 
   return (
@@ -338,7 +389,7 @@ const ReservePage = (): JSX.Element => {
         </Grid>
         <div style={{ marginTop: '15px', height: 400, width: '100%' }}>
           <DataGrid
-            rows={rows}
+            rows={ticketData}
             columns={columns}
             pageSize={5}
             checkboxSelection
