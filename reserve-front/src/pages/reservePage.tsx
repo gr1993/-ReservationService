@@ -155,10 +155,16 @@ const ReservePage = (): JSX.Element => {
   const history = useHistory();
   const memberReducer = useSelector((state: RootReducerType) => state.memberReducer);
 
-  const [memberCount, setMemberCount] = useState('');
   const [airlineData, setAirlineData] = useState(emptyState);
   const [startAirportData, setStartAirportData] = useState(emptyState);
   const [endAirportData, setEndAirportData] = useState(emptyState);
+
+  const [memberCount, setMemberCount] = useState('');
+  const [airline, setAirline] = useState('');
+  const [startAirport, setStartAirport] = useState('');
+  const [endAirport, setEndAirport] = useState('');
+  const [startDate, setStartDate] = useState('2021-09-20');
+  const [startTime, setStartTime] = useState('09:00');
 
   const getAirlineData = async () => {
     const response = await getTicketAirline();
@@ -234,6 +240,30 @@ const ReservePage = (): JSX.Element => {
   const onChangeMemberCount = (value: string) => {
     setMemberCount(value);
   };
+  const onChangeAirline = (value: string) => {
+    setAirline(value);
+  };
+  const onChangeStartAirport = (value: string) => {
+    setStartAirport(value);
+  };
+  const onChangeEndAirport = (value: string) => {
+    setEndAirport(value);
+  };
+  const onChangeStartDate = (event: any) => {
+    setStartDate(event.target.value);
+  };
+  const onChangeStartTime = (event: any) => {
+    setStartTime(event.target.value);
+  };
+
+  const searchTicket = () => {
+    console.log(memberCount);
+    console.log(airline);
+    console.log(startAirport);
+    console.log(endAirport);
+    console.log(startDate);
+    console.log(startTime);
+  };
 
   return (
     <StyledMainDiv>
@@ -247,7 +277,7 @@ const ReservePage = (): JSX.Element => {
           <CustomField
             labelText="출발지"
             dataList={startAirportData}
-            onChangeAfter={onChangeMemberCount}
+            onChangeAfter={onChangeStartAirport}
           />
           <Grid container item xs={3}>
             <Grid item xs={4}>
@@ -258,24 +288,21 @@ const ReservePage = (): JSX.Element => {
                 style={{ margin: '10px 0px 0px 15px', width: '140px' }}
                 id="date"
                 type="date"
-                defaultValue="2021-09-20"
+                defaultValue={startDate}
                 InputLabelProps={{
                   shrink: true,
                 }}
+                onChange={onChangeStartDate}
               />
             </Grid>
           </Grid>
         </Grid>
         <Grid container>
-          <CustomField
-            labelText="항공사"
-            dataList={airlineData}
-            onChangeAfter={onChangeMemberCount}
-          />
+          <CustomField labelText="항공사" dataList={airlineData} onChangeAfter={onChangeAirline} />
           <CustomField
             labelText="도착지"
             dataList={endAirportData}
-            onChangeAfter={onChangeMemberCount}
+            onChangeAfter={onChangeEndAirport}
           />
           <Grid container item xs={3}>
             <Grid item xs={4}>
@@ -286,13 +313,14 @@ const ReservePage = (): JSX.Element => {
                 style={{ margin: '10px 0px 0px 15px', width: '140px' }}
                 id="time"
                 type="time"
-                defaultValue="07:00"
+                defaultValue={startTime}
                 InputLabelProps={{
                   shrink: true,
                 }}
                 inputProps={{
                   step: 300, // 5 min
                 }}
+                onChange={onChangeStartTime}
               />
             </Grid>
           </Grid>
@@ -302,6 +330,7 @@ const ReservePage = (): JSX.Element => {
               className="ButtonStyle"
               variant="contained"
               color="primary"
+              onClick={searchTicket}
             >
               조회하기
             </Button>
