@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { DOMAIN, axiosRequest, ResponseReturnType } from '../../helper/axiosHelper';
-import { SearchTicketType } from './ticketActionType';
+import { ReserveTicketType, SearchTicketType } from './ticketActionType';
 
 interface AirlineReturn extends ResponseReturnType {
   data: {
@@ -45,6 +45,25 @@ export const getTicketData = async (searchParam: SearchTicketType): Promise<Resp
     axios.get(`${DOMAIN}/ticket`, {
       params: searchParam,
     })
+  );
+
+  return {
+    data: response.data,
+    success: response.success,
+    msg: response.msg,
+  };
+};
+
+export const reserveTicket = async (
+  accessToken: string,
+  tickets: ReserveTicketType
+): Promise<ResponseReturnType> => {
+  const header = {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  };
+
+  const response = await axiosRequest(() =>
+    axios.post(`${DOMAIN}/ticket/Reserve`, tickets, header)
   );
 
   return {

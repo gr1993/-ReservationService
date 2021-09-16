@@ -14,7 +14,12 @@ import { useHistory } from 'react-router-dom';
 import style from 'styled-components';
 import dateformat from 'dateformat';
 import { RootReducerType } from '../state/store';
-import { getTicketAirline, getTicketAirport, getTicketData } from '../state/actions/ticketAction';
+import {
+  getTicketAirline,
+  getTicketAirport,
+  getTicketData,
+  reserveTicket,
+} from '../state/actions/ticketAction';
 
 const StyledMainDiv = style.div`
   margin: 0px auto;
@@ -229,11 +234,11 @@ const ReservePage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    // if (!memberReducer.accessToken) {
-    //   alert('로그인 후 이용이 가능합니다.');
-    //   history.push('/login');
-    //   return;
-    // }
+    if (!memberReducer.accessToken) {
+      alert('로그인 후 이용이 가능합니다.');
+      history.push('/login');
+      return;
+    }
 
     getAirlineData();
     getStartAirportData();
@@ -322,7 +327,7 @@ const ReservePage = (): JSX.Element => {
     }
   };
 
-  const reserveTicket = async () => {
+  const reserveTicketAction = async () => {
     if (!memberCount) {
       alert('인원을 입력하세요.');
       return;
@@ -331,7 +336,21 @@ const ReservePage = (): JSX.Element => {
       alert('예약할 항공권 선택하세요');
       return;
     }
-    console.log(selectedTickets);
+    if (!memberReducer.accessToken) {
+      alert('로그인 후 이용이 가능합니다.');
+      return;
+    }
+
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm('선택된 항공권을 예약하시겠습니까?')) {
+      const response = await reserveTicket(memberReducer.accessToken, {
+        ticketSrls: selectedTickets,
+        count: Number(memberCount),
+      });
+
+      alert(response.msg);
+      searchTicket();
+    }
   };
 
   return (
@@ -421,7 +440,7 @@ const ReservePage = (): JSX.Element => {
           className="ButtonStyle"
           variant="contained"
           color="secondary"
-          onClick={reserveTicket}
+          onClick={reserveTicketAction}
         >
           예약하기
         </Button>

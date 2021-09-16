@@ -6,3 +6,8 @@ export interface SearchTicketType {
   endAirport?: string;
   startDate: Date;
 }
+
+export interface ReserveTicketType {
+  ticketSrls: number[];
+  count: number;
+}
