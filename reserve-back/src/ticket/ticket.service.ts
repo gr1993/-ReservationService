@@ -105,6 +105,9 @@ export class TicketService {
         'rest',
       ],
       where: whereObejct,
+      order: {
+        start_date: 'ASC',
+      },
     };
     if (condition.pageNumber) {
       selectObject['skip'] = (condition.pageNumber - 1) * MAX_PAGE_COUNT;
