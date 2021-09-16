@@ -49,6 +49,66 @@ interface CustomFieldProps {
   onChangeAfter: (value: string) => void;
 }
 
+const columns = [
+  { field: 'id', hide: true },
+  { field: 'airline', headerName: '항공사', width: 100, sortable: false },
+  { field: 'start_airport', headerName: '출발지', width: 120, sortable: false },
+  { field: 'end_airport', headerName: '도착지', width: 120, sortable: false },
+  { field: 'start_date', headerName: '출발일', width: 120, sortable: false },
+  { field: 'start_time', headerName: '출발시간', width: 110, sortable: false },
+  { field: 'end_time', headerName: '도착시간', width: 110, sortable: false },
+  { field: 'price', headerName: '금액', width: 120, sortable: false },
+  { field: 'rest', headerName: '잔여석', width: 100, sortable: false },
+];
+
+const rows = [
+  {
+    id: '1',
+    airline: '대한항공',
+    start_airport: '인천공항',
+    end_airport: '프랑스공항',
+    start_date: '2021-09-20',
+    start_time: '09:00',
+    end_time: '15:00',
+    price: '1,152,000',
+    rest: '7/15',
+  },
+];
+
+const emptyState = [
+  {
+    display: 'None',
+    value: '',
+  },
+];
+
+const memberCountData = [
+  {
+    display: 'None',
+    value: '',
+  },
+  {
+    display: '1명',
+    value: '1',
+  },
+  {
+    display: '2명',
+    value: '2',
+  },
+  {
+    display: '3명',
+    value: '3',
+  },
+  {
+    display: '4명',
+    value: '4',
+  },
+  {
+    display: '5명',
+    value: '5',
+  },
+];
+
 const CustomField: React.FC<CustomFieldProps> = ({
   labelText,
   dataList,
@@ -91,71 +151,14 @@ const CustomField: React.FC<CustomFieldProps> = ({
   );
 };
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
-  {
-    field: 'firstName',
-    headerName: 'First name',
-    width: 150,
-    editable: true,
-  },
-  {
-    field: 'lastName',
-    headerName: 'Last name',
-    width: 150,
-    editable: true,
-  },
-  {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 110,
-    editable: true,
-  },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-  },
-];
-
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
-
 const ReservePage = (): JSX.Element => {
   const history = useHistory();
   const memberReducer = useSelector((state: RootReducerType) => state.memberReducer);
 
   const [memberCount, setMemberCount] = useState('');
-  const [airlineData, setAirlineData] = useState([
-    {
-      display: 'None',
-      value: '',
-    },
-  ]);
-  const [startAirportData, setStartAirportData] = useState([
-    {
-      display: 'None',
-      value: '',
-    },
-  ]);
-  const [endAirportData, setEndAirportData] = useState([
-    {
-      display: 'None',
-      value: '',
-    },
-  ]);
+  const [airlineData, setAirlineData] = useState(emptyState);
+  const [startAirportData, setStartAirportData] = useState(emptyState);
+  const [endAirportData, setEndAirportData] = useState(emptyState);
 
   const getAirlineData = async () => {
     const response = await getTicketAirline();
@@ -228,32 +231,6 @@ const ReservePage = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const memberCountData = [
-    {
-      display: 'None',
-      value: '',
-    },
-    {
-      display: '1명',
-      value: '1',
-    },
-    {
-      display: '2명',
-      value: '2',
-    },
-    {
-      display: '3명',
-      value: '3',
-    },
-    {
-      display: '4명',
-      value: '4',
-    },
-    {
-      display: '5명',
-      value: '5',
-    },
-  ];
   const onChangeMemberCount = (value: string) => {
     setMemberCount(value);
   };
