@@ -33,7 +33,7 @@ const columns = [
   { field: 'start_time', headerName: '출발시간', width: 110, sortable: false },
   { field: 'end_time', headerName: '도착시간', width: 110, sortable: false },
   { field: 'price', headerName: '금액', width: 120, sortable: false },
-  { field: 'rest', headerName: '잔여석', width: 100, sortable: false },
+  { field: 'count', headerName: '좌석수', width: 100, sortable: false },
 ];
 
 const CheckPage = (): JSX.Element => {

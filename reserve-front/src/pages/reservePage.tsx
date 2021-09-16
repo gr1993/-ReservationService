@@ -21,6 +21,10 @@ import {
   reserveTicket,
 } from '../state/actions/ticketAction';
 
+const StyledMenuDiv = style.div`
+  font-size: 2.0em;
+  margin-bottom: 50px;
+`;
 const StyledMainDiv = style.div`
   margin: 0px auto;
   width: 100%;
@@ -354,98 +358,107 @@ const ReservePage = (): JSX.Element => {
   };
 
   return (
-    <StyledMainDiv>
-      <div>
-        <Grid container style={{ margin: '10px 0px 0px 0px' }}>
-          <CustomField
-            labelText="인원"
-            dataList={memberCountData}
-            onChangeAfter={onChangeMemberCount}
-          />
-          <CustomField
-            labelText="출발지"
-            dataList={startAirportData}
-            onChangeAfter={onChangeStartAirport}
-          />
-          <Grid container item xs={3}>
-            <Grid item xs={4}>
-              <StyledFontDiv>출발일</StyledFontDiv>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField
-                style={{ margin: '10px 0px 0px 15px', width: '140px' }}
-                id="date"
-                type="date"
-                defaultValue={startDate}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={onChangeStartDate}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid container>
-          <CustomField labelText="항공사" dataList={airlineData} onChangeAfter={onChangeAirline} />
-          <CustomField
-            labelText="도착지"
-            dataList={endAirportData}
-            onChangeAfter={onChangeEndAirport}
-          />
-          <Grid container item xs={3}>
-            <Grid item xs={4}>
-              <StyledFontDiv>출발시간</StyledFontDiv>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField
-                style={{ margin: '10px 0px 0px 15px', width: '140px' }}
-                id="time"
-                type="time"
-                defaultValue={startTime}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 300, // 5 min
-                }}
-                onChange={onChangeStartTime}
-              />
+    <div>
+      <StyledMenuDiv>
+        <b>예약하기(항공권)</b>
+      </StyledMenuDiv>
+      <StyledMainDiv>
+        <div>
+          <Grid container style={{ margin: '10px 0px 0px 0px' }}>
+            <CustomField
+              labelText="인원"
+              dataList={memberCountData}
+              onChangeAfter={onChangeMemberCount}
+            />
+            <CustomField
+              labelText="출발지"
+              dataList={startAirportData}
+              onChangeAfter={onChangeStartAirport}
+            />
+            <Grid container item xs={3}>
+              <Grid item xs={4}>
+                <StyledFontDiv>출발일</StyledFontDiv>
+              </Grid>
+              <Grid item xs={8}>
+                <TextField
+                  style={{ margin: '10px 0px 0px 15px', width: '140px' }}
+                  id="date"
+                  type="date"
+                  defaultValue={startDate}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={onChangeStartDate}
+                />
+              </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={3}>
-            <Button
-              style={{ margin: '10px 0px 0px 20px' }}
-              className="ButtonStyle"
-              variant="contained"
-              color="primary"
-              onClick={searchTicket}
-            >
-              조회하기
-            </Button>
+          <Grid container>
+            <CustomField
+              labelText="항공사"
+              dataList={airlineData}
+              onChangeAfter={onChangeAirline}
+            />
+            <CustomField
+              labelText="도착지"
+              dataList={endAirportData}
+              onChangeAfter={onChangeEndAirport}
+            />
+            <Grid container item xs={3}>
+              <Grid item xs={4}>
+                <StyledFontDiv>출발시간</StyledFontDiv>
+              </Grid>
+              <Grid item xs={8}>
+                <TextField
+                  style={{ margin: '10px 0px 0px 15px', width: '140px' }}
+                  id="time"
+                  type="time"
+                  defaultValue={startTime}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    step: 300, // 5 min
+                  }}
+                  onChange={onChangeStartTime}
+                />
+              </Grid>
+            </Grid>
+            <Grid item xs={3}>
+              <Button
+                style={{ margin: '10px 0px 0px 20px' }}
+                className="ButtonStyle"
+                variant="contained"
+                color="primary"
+                onClick={searchTicket}
+              >
+                조회하기
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-        <div style={{ marginTop: '15px', height: 400, width: '100%' }}>
-          <DataGrid
-            rows={ticketData}
-            columns={columns}
-            pageSize={5}
-            checkboxSelection
-            disableSelectionOnClick
-            disableColumnMenu
-            onSelectionModelChange={onSelectionModelChange}
-          />
+          <div style={{ marginTop: '15px', height: 400, width: '100%' }}>
+            <DataGrid
+              rows={ticketData}
+              columns={columns}
+              pageSize={5}
+              checkboxSelection
+              disableSelectionOnClick
+              disableColumnMenu
+              onSelectionModelChange={onSelectionModelChange}
+            />
+          </div>
+          <Button
+            style={{ margin: '10px 15px 0px 0px', float: 'right', width: '150px', height: '60px' }}
+            className="ButtonStyle"
+            variant="contained"
+            color="secondary"
+            onClick={reserveTicketAction}
+          >
+            예약하기
+          </Button>
         </div>
-        <Button
-          style={{ margin: '10px 15px 0px 0px', float: 'right', width: '150px', height: '60px' }}
-          className="ButtonStyle"
-          variant="contained"
-          color="secondary"
-          onClick={reserveTicketAction}
-        >
-          예약하기
-        </Button>
-      </div>
-    </StyledMainDiv>
+      </StyledMainDiv>
+    </div>
   );
 };
 
