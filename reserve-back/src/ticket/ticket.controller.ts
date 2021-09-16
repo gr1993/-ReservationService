@@ -25,9 +25,9 @@ export class TicketController {
   }
 
   @Get('airline')
-  async GetAirlineCode(@Res() res: Response) {
+  async getAirlineCode(@Res() res: Response) {
     try {
-      const data = await this.ticketService.GetAirlineCode();
+      const data = await this.ticketService.getAirlineCode();
       res.status(HttpStatus.OK).send({
         data,
         success: true,
@@ -42,9 +42,9 @@ export class TicketController {
   }
 
   @Get('airport/list')
-  async GetAirportList(@Query('type') type: string, @Res() res: Response) {
+  async getAirportList(@Query('type') type: string, @Res() res: Response) {
     try {
-      const data = await this.ticketService.GetAirportList(type);
+      const data = await this.ticketService.getAirportList(type);
       res.status(HttpStatus.OK).send({
         data,
         success: true,
@@ -59,9 +59,9 @@ export class TicketController {
   }
 
   @Get()
-  async Search(@Query() condition: SearchTicketDto, @Res() res: Response) {
+  async search(@Query() condition: SearchTicketDto, @Res() res: Response) {
     try {
-      const [data, count] = await this.ticketService.Search(condition);
+      const [data, count] = await this.ticketService.search(condition);
       res.status(HttpStatus.OK).send({
         data,
         success: true,
@@ -77,17 +77,36 @@ export class TicketController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('Reserve')
-  async Reserve(
+  @Post('reserve')
+  async reserve(
     @Req() req,
     @Body() ticketDto: ReserveTicketDto,
     @Res() res: Response,
   ) {
     try {
-      await this.ticketService.Reserve(req.user.id, ticketDto);
+      await this.ticketService.reserve(req.user.id, ticketDto);
       res.status(HttpStatus.OK).send({
         success: true,
         msg: '예약이 완료되었습니다.',
+      });
+    } catch (err) {
+      res.status(HttpStatus.BAD_REQUEST).send({
+        success: false,
+        msg: err.message,
+      });
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('reserve/check')
+  async check(@Req() req, @Res() res: Response) {
+    try {
+      const [data, count] = await this.ticketService.check(req.user.id);
+      res.status(HttpStatus.OK).send({
+        data,
+        success: true,
+        msg: '조회되었습니다.',
+        totalCount: count,
       });
     } catch (err) {
       res.status(HttpStatus.BAD_REQUEST).send({

@@ -12,6 +12,7 @@ import { Code } from './entities/code.entity';
 import { Reservation } from './entities/reservation.entity';
 import { Ticket } from './entities/ticket.entity';
 import { MemberService } from '../member/member.service';
+import { RetunCheckDto } from './dto/return-check.dto';
 
 const MAX_PAGE_COUNT = 5;
 
@@ -58,9 +59,11 @@ export class TicketService {
     private memberService: MemberService,
     @InjectRepository(Code) private codeRepository: Repository<Code>,
     @InjectRepository(Ticket) private ticketRepository: Repository<Ticket>,
+    @InjectRepository(Reservation)
+    private resRepository: Repository<Reservation>,
   ) {}
 
-  async GetAirlineCode() {
+  async getAirlineCode() {
     return await this.codeRepository.find({
       select: ['code', 'title'],
       where: {
@@ -69,7 +72,7 @@ export class TicketService {
     });
   }
 
-  async GetAirportList(type: string) {
+  async getAirportList(type: string) {
     const airports = await this.ticketRepository
       .createQueryBuilder('ticket')
       .select(type)
@@ -78,7 +81,7 @@ export class TicketService {
     return airports;
   }
 
-  async Search(condition: SearchTicketDto) {
+  async search(condition: SearchTicketDto) {
     const whereObejct = {
       rest: MoreThanOrEqual(condition.memberCount),
     };
@@ -121,7 +124,7 @@ export class TicketService {
     return await this.ticketRepository.findAndCount(selectObject);
   }
 
-  async Reserve(memberId: string, ticketDto: ReserveTicketDto) {
+  async reserve(memberId: string, ticketDto: ReserveTicketDto) {
     const member = await this.memberService.getMember(memberId);
 
     const queryRunner = getConnection().createQueryRunner();
@@ -157,6 +160,33 @@ export class TicketService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  async check(memberId: string): Promise<[RetunCheckDto[], number]> {
+    const member = await this.memberService.getMember(memberId);
+
+    const result = await this.resRepository
+      .createQueryBuilder('res')
+      .innerJoinAndSelect('res.ticket', 'tic')
+      .where('res.member_srl = :member_srl', { member_srl: member.srl })
+      .getMany();
+
+    const data = result.map((res) => {
+      const dto: RetunCheckDto = new RetunCheckDto();
+      dto.srl = res.srl;
+      dto.airline = res.ticket.airline;
+      dto.start_airport = res.ticket.start_airport;
+      dto.end_airport = res.ticket.end_airport;
+      dto.start_date = res.ticket.start_date;
+      dto.duration_time = res.ticket.duration_time;
+      dto.price = res.ticket.price;
+      dto.count = res.count;
+
+      return dto;
+    });
+    const count = data.length;
+
+    return [data, count];
   }
 
   async insertSeed(): Promise<void> {
