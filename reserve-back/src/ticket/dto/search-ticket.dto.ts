@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class SearchTicketDto {
@@ -19,7 +20,8 @@ export class SearchTicketDto {
   @IsOptional()
   endAirport: string;
 
+  @Type(() => Date)
   @IsDate()
   @IsOptional()
-  date: Date;
+  startDate: Date;
 }

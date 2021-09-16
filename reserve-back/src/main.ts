@@ -15,6 +15,7 @@ async function bootstrap() {
       transformOptions: {
         enableImplicitConversion: true, // 암묵적으로 타입을 변환 시켜준다.
       },
+      forbidUnknownValues: true,
     }),
   );
 
