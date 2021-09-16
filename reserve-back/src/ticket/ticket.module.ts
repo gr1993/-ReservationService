@@ -5,9 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Code } from './entities/code.entity';
 import { Ticket } from './entities/ticket.entity';
 import { Reservation } from './entities/reservation.entity';
+import { MemberModule } from '../member/member.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Code, Ticket, Reservation])],
+  imports: [
+    TypeOrmModule.forFeature([Code, Ticket, Reservation]),
+    MemberModule,
+  ],
   controllers: [TicketController],
   providers: [TicketService],
 })

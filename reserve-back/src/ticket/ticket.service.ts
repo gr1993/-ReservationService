@@ -6,9 +6,12 @@ import {
   MoreThanOrEqual,
   Repository,
 } from 'typeorm';
+import { ReserveTicketDto } from './dto/reserve-ticket.dto';
 import { SearchTicketDto } from './dto/search-ticket.dto';
 import { Code } from './entities/code.entity';
+import { Reservation } from './entities/reservation.entity';
 import { Ticket } from './entities/ticket.entity';
+import { MemberService } from '../member/member.service';
 
 const MAX_PAGE_COUNT = 5;
 
@@ -52,6 +55,7 @@ const createTicket = (
 @Injectable()
 export class TicketService {
   constructor(
+    private memberService: MemberService,
     @InjectRepository(Code) private codeRepository: Repository<Code>,
     @InjectRepository(Ticket) private ticketRepository: Repository<Ticket>,
   ) {}
@@ -115,6 +119,44 @@ export class TicketService {
     }
 
     return await this.ticketRepository.findAndCount(selectObject);
+  }
+
+  async Reserve(memberId: string, ticketDto: ReserveTicketDto) {
+    const member = await this.memberService.getMember(memberId);
+
+    const queryRunner = getConnection().createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      for (let i = 0; i < ticketDto.ticketSrls.length; i++) {
+        const ticketSrl = ticketDto.ticketSrls[i];
+
+        const newReservation: Reservation = new Reservation();
+        newReservation.member_srl = member.srl;
+        newReservation.ticket_srl = ticketSrl;
+        newReservation.count = ticketDto.count;
+
+        await queryRunner.manager.save<Reservation>(newReservation);
+
+        const ticket = await this.ticketRepository.findOne({
+          where: { srl: ticketSrl },
+        });
+        await queryRunner.manager.update(
+          Ticket,
+          { srl: ticketSrl },
+          {
+            rest: ticket.rest - ticketDto.count,
+          },
+        );
+      }
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async insertSeed(): Promise<void> {
