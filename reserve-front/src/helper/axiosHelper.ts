@@ -1,5 +1,7 @@
 import { AxiosResponse } from 'axios';
 
+export const DOMAIN = 'http://localhost:8080';
+
 type requestFunc = () => Promise<AxiosResponse>;
 
 export interface ResponseReturnType {

@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { MemberRegisterType, MemberLoginType, MemberUpdateType } from './memberActionType';
-import { axiosRequest, ResponseReturnType } from '../../helper/axiosHelper';
-
-const DOMAIN = 'http://localhost:8080';
+import { DOMAIN, axiosRequest, ResponseReturnType } from '../../helper/axiosHelper';
 
 export const memberRegister = async (member: MemberRegisterType): Promise<ResponseReturnType> => {
   const response = await axiosRequest(() => axios.post(`${DOMAIN}/member`, member));

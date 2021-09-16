@@ -8,11 +8,12 @@ import {
   TextField,
 } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import style from 'styled-components';
 import { RootReducerType } from '../state/store';
+import { getTicketAirline, getTicketAirport } from '../state/actions/ticketAction';
 
 const StyledMainDiv = style.div`
   margin: 0px auto;
@@ -41,10 +42,26 @@ const useStyles = makeStyles((theme) => ({
 
 interface CustomFieldProps {
   labelText: string;
+  dataList: {
+    value: string;
+    display: string;
+  }[];
+  onChangeAfter: (value: string) => void;
 }
 
-const CustomField: React.FC<CustomFieldProps> = ({ labelText }): JSX.Element => {
+const CustomField: React.FC<CustomFieldProps> = ({
+  labelText,
+  dataList,
+  onChangeAfter,
+}): JSX.Element => {
   const classes = useStyles();
+  const [value, setvalue] = React.useState('');
+
+  const handleChange = (event: any) => {
+    const data = event.target.value;
+    setvalue(data);
+    onChangeAfter(data);
+  };
 
   return (
     <Grid container item xs={3}>
@@ -57,14 +74,16 @@ const CustomField: React.FC<CustomFieldProps> = ({ labelText }): JSX.Element => 
             className={classes.selectEmpty}
             labelId="demo-simple-select-outlined-label"
             id="demo-simple-select-outlined"
-            label="Age"
+            value={value}
+            onChange={handleChange}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {dataList.map((d) => {
+              return (
+                <MenuItem key={d.value} value={d.value}>
+                  {d.display}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
       </Grid>
@@ -118,31 +137,151 @@ const ReservePage = (): JSX.Element => {
   const history = useHistory();
   const memberReducer = useSelector((state: RootReducerType) => state.memberReducer);
 
+  const [memberCount, setMemberCount] = useState('');
+  const [airlineData, setAirlineData] = useState([
+    {
+      display: 'None',
+      value: '',
+    },
+  ]);
+  const [startAirportData, setStartAirportData] = useState([
+    {
+      display: 'None',
+      value: '',
+    },
+  ]);
+  const [endAirportData, setEndAirportData] = useState([
+    {
+      display: 'None',
+      value: '',
+    },
+  ]);
+
+  const getAirlineData = async () => {
+    const response = await getTicketAirline();
+
+    if (response.success) {
+      const data = response.data.map((d) => {
+        return {
+          display: d.title,
+          value: d.code,
+        };
+      });
+      setAirlineData([
+        {
+          display: 'None',
+          value: '',
+        },
+        ...data,
+      ]);
+    }
+  };
+  const getStartAirportData = async () => {
+    const response = await getTicketAirport('start_airport');
+
+    if (response.success) {
+      const data = response.data.map((d) => {
+        return {
+          display: d.start_airport,
+          value: d.start_airport,
+        };
+      });
+      setStartAirportData([
+        {
+          display: 'None',
+          value: '',
+        },
+        ...data,
+      ]);
+    }
+  };
+  const getEndAirportData = async () => {
+    const response = await getTicketAirport('end_airport');
+
+    if (response.success) {
+      const data = response.data.map((d) => {
+        return {
+          display: d.end_airport,
+          value: d.end_airport,
+        };
+      });
+      setEndAirportData([
+        {
+          display: 'None',
+          value: '',
+        },
+        ...data,
+      ]);
+    }
+  };
+
   useEffect(() => {
     // if (!memberReducer.accessToken) {
     //   alert('로그인 후 이용이 가능합니다.');
     //   history.push('/login');
     //   return;
     // }
+
+    getAirlineData();
+    getStartAirportData();
+    getEndAirportData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const memberCountData = [
+    {
+      display: 'None',
+      value: '',
+    },
+    {
+      display: '1명',
+      value: '1',
+    },
+    {
+      display: '2명',
+      value: '2',
+    },
+    {
+      display: '3명',
+      value: '3',
+    },
+    {
+      display: '4명',
+      value: '4',
+    },
+    {
+      display: '5명',
+      value: '5',
+    },
+  ];
+  const onChangeMemberCount = (value: string) => {
+    setMemberCount(value);
+  };
 
   return (
     <StyledMainDiv>
       <div>
         <Grid container style={{ margin: '10px 0px 0px 0px' }}>
-          <CustomField labelText="인원" />
-          <CustomField labelText="출발지" />
+          <CustomField
+            labelText="인원"
+            dataList={memberCountData}
+            onChangeAfter={onChangeMemberCount}
+          />
+          <CustomField
+            labelText="출발지"
+            dataList={startAirportData}
+            onChangeAfter={onChangeMemberCount}
+          />
           <Grid container item xs={3}>
             <Grid item xs={4}>
               <StyledFontDiv>출발일</StyledFontDiv>
             </Grid>
             <Grid item xs={8}>
               <TextField
-                style={{ margin: '10px 0px 0px 15px', width: '135px' }}
+                style={{ margin: '10px 0px 0px 15px', width: '140px' }}
                 id="date"
                 type="date"
-                defaultValue="2017-05-24"
+                defaultValue="2021-09-20"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -151,18 +290,26 @@ const ReservePage = (): JSX.Element => {
           </Grid>
         </Grid>
         <Grid container>
-          <CustomField labelText="항공사" />
-          <CustomField labelText="도착지" />
+          <CustomField
+            labelText="항공사"
+            dataList={airlineData}
+            onChangeAfter={onChangeMemberCount}
+          />
+          <CustomField
+            labelText="도착지"
+            dataList={endAirportData}
+            onChangeAfter={onChangeMemberCount}
+          />
           <Grid container item xs={3}>
             <Grid item xs={4}>
               <StyledFontDiv>출발시간</StyledFontDiv>
             </Grid>
             <Grid item xs={8}>
               <TextField
-                style={{ margin: '10px 0px 0px 15px', width: '135px' }}
+                style={{ margin: '10px 0px 0px 15px', width: '140px' }}
                 id="time"
                 type="time"
-                defaultValue="07:30"
+                defaultValue="07:00"
                 InputLabelProps={{
                   shrink: true,
                 }}
