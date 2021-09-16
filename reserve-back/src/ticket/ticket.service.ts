@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getConnection, MoreThanOrEqual, Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  getConnection,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
 import { SearchTicketDto } from './dto/search-ticket.dto';
 import { Code } from './entities/code.entity';
 import { Ticket } from './entities/ticket.entity';
@@ -73,6 +78,7 @@ export class TicketService {
     const whereObejct = {
       rest: MoreThanOrEqual(condition.memberCount),
     };
+
     if (condition.airline) {
       whereObejct['airline'] = condition.airline;
     }
@@ -86,7 +92,7 @@ export class TicketService {
       whereObejct['start_date'] = MoreThanOrEqual(condition.startDate);
     }
 
-    return await this.ticketRepository.findAndCount({
+    const selectObject: FindManyOptions<Ticket> = {
       select: [
         'srl',
         'airline',
@@ -99,9 +105,13 @@ export class TicketService {
         'rest',
       ],
       where: whereObejct,
-      skip: (condition.pageNumber - 1) * MAX_PAGE_COUNT,
-      take: MAX_PAGE_COUNT,
-    });
+    };
+    if (condition.pageNumber) {
+      selectObject['skip'] = (condition.pageNumber - 1) * MAX_PAGE_COUNT;
+      selectObject['take'] = MAX_PAGE_COUNT;
+    }
+
+    return await this.ticketRepository.findAndCount(selectObject);
   }
 
   async insertSeed(): Promise<void> {

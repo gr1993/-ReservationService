@@ -3,6 +3,7 @@ import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class SearchTicketDto {
   @IsNumber()
+  @IsOptional()
   pageNumber: number;
 
   @IsNumber()
