@@ -10,6 +10,7 @@ import InfoPage from './pages/infoPage';
 import EmptyPage from './pages/emptyPage';
 import ReservePage from './pages/reservePage';
 import CheckPage from './pages/checkPage';
+import SimpleModal from './components/modal';
 
 const StyledMainDiv = styled.div`
   width: 100%;
@@ -56,6 +57,7 @@ function App(): JSX.Element {
           </Switch>
         </StyledContentDiv>
       </StyledMainDiv>
+      <SimpleModal />
     </BrowserRouter>
   );
 }
