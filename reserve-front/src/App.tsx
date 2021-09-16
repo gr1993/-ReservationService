@@ -9,6 +9,7 @@ import RegisterPage from './pages/registerPage';
 import InfoPage from './pages/infoPage';
 import EmptyPage from './pages/emptyPage';
 import ReservePage from './pages/reservePage';
+import CheckPage from './pages/checkPage';
 
 const StyledMainDiv = styled.div`
   width: 100%;
@@ -45,6 +46,9 @@ function App(): JSX.Element {
             </Route>
             <Route path="/reserve">
               <ReservePage />
+            </Route>
+            <Route path="/check">
+              <CheckPage />
             </Route>
             <Route>
               <EmptyPage />
