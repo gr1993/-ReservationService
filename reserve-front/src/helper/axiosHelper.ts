@@ -19,7 +19,7 @@ export const axiosRequest = async (func: requestFunc): Promise<ResponseReturnTyp
       msg: response.data.msg,
     };
   } catch (error: any) {
-    if (error.response.status === 400) {
+    if (error.response && error.response.status === 400) {
       return {
         success: false,
         msg: error.response.data.msg,
