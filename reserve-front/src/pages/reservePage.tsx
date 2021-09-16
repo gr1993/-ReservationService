@@ -276,6 +276,7 @@ const ReservePage = (): JSX.Element => {
     const [year, month, day] = startDate.split('-');
     const [hour, minute] = startTime.split(':');
 
+    const codes = await getTicketAirline();
     const response = await getTicketData({
       memberCount: Number(memberCount),
       airline,
@@ -290,8 +291,9 @@ const ReservePage = (): JSX.Element => {
       ),
     });
 
-    if (response.success) {
+    if (codes.success && response.success) {
       const data = response.data.map((d: any) => {
+        const airlineName = codes.data.find((f) => f.code === d.airline)?.title;
         const startDateString = dateformat(d.start_date, 'yyyy-mm-dd');
         const startTimeString = dateformat(d.start_date, 'hh:MM');
         let endDate = new Date(d.start_date).getTime();
@@ -302,7 +304,7 @@ const ReservePage = (): JSX.Element => {
 
         return {
           id: d.srl,
-          airline: d.airline,
+          airline: airlineName,
           start_airport: d.start_airport,
           end_airport: d.end_airport,
           start_date: startDateString,
