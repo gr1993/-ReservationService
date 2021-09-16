@@ -168,6 +168,7 @@ const ReservePage = (): JSX.Element => {
   const [startTime, setStartTime] = useState('09:00');
 
   const [ticketData, setTicketData] = useState([]);
+  const [selectedTickets, setSelectedTickets] = useState([]);
 
   const getAirlineData = async () => {
     const response = await getTicketAirline();
@@ -258,6 +259,9 @@ const ReservePage = (): JSX.Element => {
   const onChangeStartTime = (event: any) => {
     setStartTime(event.target.value);
   };
+  const onSelectionModelChange = (selectionModel: any) => {
+    setSelectedTickets(selectionModel);
+  };
 
   const searchTicket = async () => {
     if (!memberCount) {
@@ -316,6 +320,18 @@ const ReservePage = (): JSX.Element => {
       });
       setTicketData(data);
     }
+  };
+
+  const reserveTicket = async () => {
+    if (!memberCount) {
+      alert('인원을 입력하세요.');
+      return;
+    }
+    if (selectedTickets.length === 0) {
+      alert('예약할 항공권 선택하세요');
+      return;
+    }
+    console.log(selectedTickets);
   };
 
   return (
@@ -396,6 +412,8 @@ const ReservePage = (): JSX.Element => {
             pageSize={5}
             checkboxSelection
             disableSelectionOnClick
+            disableColumnMenu
+            onSelectionModelChange={onSelectionModelChange}
           />
         </div>
         <Button
@@ -403,6 +421,7 @@ const ReservePage = (): JSX.Element => {
           className="ButtonStyle"
           variant="contained"
           color="secondary"
+          onClick={reserveTicket}
         >
           예약하기
         </Button>
