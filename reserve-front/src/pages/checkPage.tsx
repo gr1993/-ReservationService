@@ -1,9 +1,11 @@
 import { Button } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
+import dateformat from 'dateformat';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import style from 'styled-components';
+import { cancelTicket, getReservationData, getTicketAirline } from '../state/actions/ticketAction';
 import { RootReducerType } from '../state/store';
 
 const StyledMainDiv = style.div`
@@ -43,12 +45,45 @@ const CheckPage = (): JSX.Element => {
   const [ticketData, setTicketData] = useState([]);
   const [selectedTickets, setSelectedTickets] = useState([]);
 
-  useEffect(() => {
+  const loadReservationData = async () => {
     if (!memberReducer.accessToken) {
       alert('로그인 후 이용이 가능합니다.');
       history.push('/login');
-      // return;
+      return;
     }
+
+    const codes = await getTicketAirline();
+    const response = await getReservationData(memberReducer.accessToken);
+
+    if (codes.success && response.success) {
+      const data = response.data.map((d: any) => {
+        const airlineName = codes.data.find((f) => f.code === d.airline)?.title;
+        const startDateString = dateformat(d.start_date, 'yyyy-mm-dd');
+        const startTimeString = dateformat(d.start_date, 'hh:MM');
+        let endDate = new Date(d.start_date).getTime();
+        endDate += d.duration_time * 60 * 60 * 1000;
+        const emdTimeString = dateformat(new Date(endDate), 'hh:MM');
+        const priceString = d.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        const countString = d.count.toString();
+
+        return {
+          id: d.srl,
+          airline: airlineName,
+          start_airport: d.start_airport,
+          end_airport: d.end_airport,
+          start_date: startDateString,
+          start_time: startTimeString,
+          end_time: emdTimeString,
+          price: priceString,
+          count: countString,
+        };
+      });
+      setTicketData(data);
+    }
+  };
+
+  useEffect(() => {
+    loadReservationData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -56,27 +91,21 @@ const CheckPage = (): JSX.Element => {
     setSelectedTickets(selectionModel);
   };
 
-  const reserveTicketAction = async () => {
-    // if (!memberCount) {
-    //   alert('인원을 입력하세요.');
-    //   return;
-    // }
-    // if (selectedTickets.length === 0) {
-    //   alert('예약할 항공권 선택하세요');
-    //   return;
-    // }
-    // if (!memberReducer.accessToken) {
-    //   alert('로그인 후 이용이 가능합니다.');
-    //   return;
-    // }
+  const cancelTicketAction = async () => {
+    if (selectedTickets.length === 0) {
+      alert('예약취소할 항공권 선택하세요');
+      return;
+    }
+    if (!memberReducer.accessToken) {
+      alert('로그인 후 이용이 가능합니다.');
+      return;
+    }
     // eslint-disable-next-line no-restricted-globals
-    // if (confirm('선택된 항공권을 예약하시겠습니까?')) {
-    //   const response = await reserveTicket(memberReducer.accessToken, {
-    //     ticketSrls: selectedTickets,
-    //     count: Number(memberCount),
-    //   });
-    //   alert(response.msg);
-    // }
+    if (confirm('선택된 항공권을 예약취소하시겠습니까?')) {
+      const response = await cancelTicket(memberReducer.accessToken, selectedTickets);
+      alert(response.msg);
+      loadReservationData();
+    }
   };
 
   return (
@@ -107,7 +136,7 @@ const CheckPage = (): JSX.Element => {
           className="ButtonStyle"
           variant="contained"
           color="primary"
-          onClick={reserveTicketAction}
+          onClick={cancelTicketAction}
         >
           취소하기
         </Button>

@@ -63,7 +63,40 @@ export const reserveTicket = async (
   };
 
   const response = await axiosRequest(() =>
-    axios.post(`${DOMAIN}/ticket/Reserve`, tickets, header)
+    axios.post(`${DOMAIN}/ticket/reserve`, tickets, header)
+  );
+
+  return {
+    data: response.data,
+    success: response.success,
+    msg: response.msg,
+  };
+};
+
+export const getReservationData = async (accessToken: string): Promise<ResponseReturnType> => {
+  const header = {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  };
+
+  const response = await axiosRequest(() => axios.get(`${DOMAIN}/ticket/reserve/check`, header));
+
+  return {
+    data: response.data,
+    success: response.success,
+    msg: response.msg,
+  };
+};
+
+export const cancelTicket = async (
+  accessToken: string,
+  resSrls: number[]
+): Promise<ResponseReturnType> => {
+  const header = {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  };
+
+  const response = await axiosRequest(() =>
+    axios.post(`${DOMAIN}/ticket/reserve/cancel`, { resSrls }, header)
   );
 
   return {
