@@ -213,6 +213,7 @@ export class TicketService {
       .createQueryBuilder('res')
       .innerJoinAndSelect('res.ticket', 'tic')
       .where('res.member_srl = :member_srl', { member_srl: member.srl })
+      .orderBy('tic.start_date')
       .getMany();
 
     const data = result.map((res) => {
