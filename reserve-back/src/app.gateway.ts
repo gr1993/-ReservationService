@@ -7,11 +7,14 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
+import { RedisCacheService } from './cache/redisCache.service';
 
 @WebSocketGateway()
 export class AppGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
+  constructor(private cacheService: RedisCacheService) {}
+
   @WebSocketServer() server: Server;
 
   @SubscribeMessage('msgToServer')
@@ -20,6 +23,11 @@ export class AppGateway
   }
 
   afterInit(server: Server) {
+    this.cacheService.set('test', 'data2');
+    this.cacheService.get('test').then((data) => {
+      const tees = data;
+      const test2 = '';
+    });
     return null;
   }
 

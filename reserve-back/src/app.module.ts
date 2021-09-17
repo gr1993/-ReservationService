@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { TicketModule } from './ticket/ticket.module';
 import { AppGateway } from './app.gateway';
 import config from '../ormconfig';
+import { RedisCacheModule } from './cache/redisCache.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import config from '../ormconfig';
     MemberModule,
     AuthModule,
     TicketModule,
+    RedisCacheModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway],
