@@ -1,4 +1,5 @@
 import React from 'react';
+import { io } from 'socket.io-client';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import CustomCard from '../components/customCard';
@@ -56,7 +57,12 @@ function MainPage(): JSX.Element {
           icon="default"
           color="#494AE6"
           onClickEvent={() => {
-            alert('준비중입니다...');
+            const socket = io('ws://localhost:8080', {
+              transports: ['websocket'],
+              jsonp: false,
+            });
+
+            socket.emit('hellworld', 'test');
           }}
         />
       </StyledCardDiv>
