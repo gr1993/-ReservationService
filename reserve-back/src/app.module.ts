@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { MemberModule } from './member/member.module';
 import { AuthModule } from './auth/auth.module';
 import { TicketModule } from './ticket/ticket.module';
+import { AppGateway } from './app.gateway';
 import config from '../ormconfig';
 
 @Module({
@@ -19,6 +20,6 @@ import config from '../ormconfig';
     TicketModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppGateway],
 })
 export class AppModule {}
