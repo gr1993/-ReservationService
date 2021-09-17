@@ -171,6 +171,7 @@ export class TicketService {
 
     const reservations = await this.resRepository
       .createQueryBuilder('res')
+      .innerJoinAndSelect('res.ticket', 'tic')
       .whereInIds(resSrls)
       .andWhere('res.member_srl = :member_srl', { member_srl: member.srl })
       .getMany();
@@ -184,6 +185,17 @@ export class TicketService {
     await queryRunner.startTransaction();
 
     try {
+      for (let i = 0; i < reservations.length; i++) {
+        const nextCount = reservations[i].ticket.rest + reservations[i].count;
+        await queryRunner.manager.update(
+          Ticket,
+          { srl: reservations[i].ticket.srl },
+          {
+            rest: nextCount,
+          },
+        );
+      }
+
       await queryRunner.manager.remove<Reservation>(reservations);
 
       await queryRunner.commitTransaction();
