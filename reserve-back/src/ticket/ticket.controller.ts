@@ -98,6 +98,23 @@ export class TicketController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Post('reserve/cancel')
+  async reserveCancel(@Req() req, @Body() body, @Res() res: Response) {
+    try {
+      await this.ticketService.reserveCancel(req.user.id, body.resSrls);
+      res.status(HttpStatus.OK).send({
+        success: true,
+        msg: '예약이 취소되었습니다.',
+      });
+    } catch (err) {
+      res.status(HttpStatus.BAD_REQUEST).send({
+        success: false,
+        msg: err.message,
+      });
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('reserve/check')
   async check(@Req() req, @Res() res: Response) {
     try {

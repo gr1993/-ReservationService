@@ -162,6 +162,38 @@ export class TicketService {
     }
   }
 
+  async reserveCancel(memberId: string, resSrls: number[]) {
+    if (!resSrls || !resSrls.length) {
+      throw new Error('취소할 항공권을 선택하세요.');
+    }
+
+    const member = await this.memberService.getMember(memberId);
+
+    const reservations = await this.resRepository
+      .createQueryBuilder('res')
+      .whereInIds(resSrls)
+      .andWhere('res.member_srl = :member_srl', { member_srl: member.srl })
+      .getMany();
+
+    if (resSrls.length != reservations.length) {
+      throw new Error('삭제할 수 없는 항공권이 포함되어 있습니다.');
+    }
+
+    const queryRunner = getConnection().createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      await queryRunner.manager.remove<Reservation>(reservations);
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
   async check(memberId: string): Promise<[RetunCheckDto[], number]> {
     const member = await this.memberService.getMember(memberId);
 
