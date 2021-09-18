@@ -10,8 +10,9 @@ interface RedisMember {
 }
 
 interface RedisMemberStatus {
-  memberCount: string;
-  isEntered: string;
+  memberCount: number;
+  isContained: boolean;
+  index: number;
 }
 
 @Injectable()
@@ -69,6 +70,27 @@ export class RedisCacheService {
     }
 
     this.setArray(roomName, array);
+  }
+
+  async getWaitingStatus(memberId: string): Promise<RedisMemberStatus> {
+    const array = await this.getArray(WAITING_MAMBERS);
+    const status = {
+      memberCount: 0,
+      isContained: false,
+      index: -1,
+    };
+
+    if (!array || array.length === 0) {
+      return status;
+    }
+
+    status.memberCount = array.length;
+    const index = array.findIndex((m) => m.memberId == memberId);
+    if (index > -1) {
+      status.isContained = true;
+      status.index = index;
+    }
+    return status;
   }
 
   async insertWaiting(memberId: string): Promise<void> {
