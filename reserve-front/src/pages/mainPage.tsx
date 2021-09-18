@@ -1,9 +1,11 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import CustomCard from '../components/customCard';
 import CircleCard from '../components/circleCard';
+import { RootReducerType } from '../state/store';
 
 const StyledMainDiv = styled.div`
   width: 100%;
@@ -33,6 +35,7 @@ const StyledCopyrightDiv = styled.div`
 
 function MainPage(): JSX.Element {
   const history = useHistory();
+  const memberReducer = useSelector((state: RootReducerType) => state.memberReducer);
 
   const reservationEvent = () => {
     history.push('/reserve');
@@ -57,12 +60,20 @@ function MainPage(): JSX.Element {
           icon="default"
           color="#494AE6"
           onClickEvent={() => {
+            if (!memberReducer.accessToken) {
+              alert('로그인 후 이용이 가능합니다.');
+              return;
+            }
+
             const socket = io('ws://localhost:8080', {
               transports: ['websocket'],
               jsonp: false,
+              query: {
+                token: memberReducer.accessToken,
+              },
             });
 
-            socket.emit('hellworld', 'test');
+            socket.emit('enterReservation');
           }}
         />
       </StyledCardDiv>
