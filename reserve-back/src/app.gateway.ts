@@ -59,7 +59,7 @@ export class AppGateway
     this.cacheService.removeWaiting(memberId);
     setTimeout(() => {
       this.cacheService.removeTicketing(memberId);
-    }, 30000);
+    }, 36000);
     user[client.id] = '';
   }
 
