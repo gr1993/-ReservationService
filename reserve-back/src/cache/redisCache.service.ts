@@ -1,8 +1,8 @@
 import { Injectable, Inject, CACHE_MANAGER } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 
-const WAITING_MAMBERS = 'waiting_mambers';
-const TICKETING_MEMBERS = 'ticketing_mambers';
+const WAITING_MEMBERS = 'waiting_members';
+const TICKETING_MEMBERS = 'ticketing_members';
 
 interface RedisMember {
   memberId: string;
@@ -73,7 +73,7 @@ export class RedisCacheService {
   }
 
   async getWaitingStatus(memberId: string): Promise<RedisMemberStatus> {
-    const array = await this.getArray(WAITING_MAMBERS);
+    const array = await this.getArray(WAITING_MEMBERS);
     const status = {
       memberCount: 0,
       isContained: false,
@@ -92,16 +92,23 @@ export class RedisCacheService {
     }
     return status;
   }
+  async getTicketingCount(): Promise<number> {
+    const array = await this.getArray(TICKETING_MEMBERS);
+    if (!array || !array.length) {
+      return 0;
+    }
+    return array.length;
+  }
 
   async insertWaiting(memberId: string): Promise<void> {
-    await this.insertMemberInRoom(memberId, WAITING_MAMBERS, 3600);
+    await this.insertMemberInRoom(memberId, WAITING_MEMBERS, 3600);
   }
   async insertTicketing(memberId: string): Promise<void> {
     await this.insertMemberInRoom(memberId, TICKETING_MEMBERS, 30);
   }
 
   async removeWaiting(memberId: string): Promise<void> {
-    await this.removeMemberInRoom(memberId, WAITING_MAMBERS);
+    await this.removeMemberInRoom(memberId, WAITING_MEMBERS);
   }
   async removeTicketing(memberId: string): Promise<void> {
     await this.removeMemberInRoom(memberId, TICKETING_MEMBERS);

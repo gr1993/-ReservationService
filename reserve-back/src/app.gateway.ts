@@ -35,17 +35,18 @@ export class AppGateway
   @SubscribeMessage('check')
   async handleCheck(client: Socket, payload: string) {
     const status = await this.cacheService.getWaitingStatus(user[client.id]);
-    client.emit('check', status);
-  }
 
-  @SubscribeMessage('enterTicketing')
-  async handleEnterTicketing(client: Socket, payload: string) {
-    const status = await this.cacheService.getWaitingStatus(user[client.id]);
-    const maxCount = Number(process.env.WAIT_ROOM_MEMBER_COUNT);
+    if (status.isContained) {
+      const ticketingCount = await this.cacheService.getTicketingCount();
+      const maxCount = Number(process.env.WAIT_ROOM_MEMBER_COUNT);
 
-    if (status.isContained && status.index < maxCount) {
-      this.cacheService.removeWaiting(user[client.id]);
-      this.cacheService.insertTicketing(user[client.id]);
+      if (ticketingCount < maxCount) {
+        this.cacheService.removeWaiting(user[client.id]);
+        this.cacheService.insertTicketing(user[client.id]);
+        client.emit('enterTicketing');
+      } else {
+        client.emit('check', status);
+      }
     }
   }
 
@@ -54,9 +55,12 @@ export class AppGateway
   }
 
   handleDisconnect(client: Socket) {
-    this.cacheService.removeWaiting(user[client.id]);
-    this.cacheService.removeTicketing(user[client.id]);
-    delete user[client.id];
+    const memberId = user[client.id];
+    this.cacheService.removeWaiting(memberId);
+    setTimeout(() => {
+      this.cacheService.removeTicketing(memberId);
+    }, 30000);
+    user[client.id] = '';
   }
 
   handleConnection(client: Socket, ...args: any[]) {
