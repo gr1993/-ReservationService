@@ -50,16 +50,16 @@ export class AppGateway
     }
   }
 
-  afterInit(server: Server) {
-    return null;
+  async afterInit(server: Server) {
+    await this.cacheService.initArray();
   }
 
-  handleDisconnect(client: Socket) {
+  async handleDisconnect(client: Socket) {
     const memberId = user[client.id];
-    this.cacheService.removeWaiting(memberId);
-    setTimeout(() => {
-      this.cacheService.removeTicketing(memberId);
-    }, 36000);
+    await this.cacheService.removeWaiting(memberId);
+    setTimeout(async () => {
+      await this.cacheService.removeTicketing(memberId);
+    }, 33000);
     user[client.id] = '';
   }
 

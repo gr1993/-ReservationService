@@ -72,6 +72,11 @@ export class RedisCacheService {
     this.setArray(roomName, array);
   }
 
+  async initArray(): Promise<void> {
+    this.setArray(WAITING_MEMBERS, []);
+    this.setArray(TICKETING_MEMBERS, []);
+  }
+
   async getWaitingStatus(memberId: string): Promise<RedisMemberStatus> {
     const array = await this.getArray(WAITING_MEMBERS);
     const status = {
