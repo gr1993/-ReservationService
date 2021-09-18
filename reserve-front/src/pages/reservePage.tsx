@@ -21,6 +21,19 @@ import {
   reserveTicket,
 } from '../state/actions/ticketAction';
 
+const StyledTimeDiv = style.div`
+  position: absolute;
+  width: 100px;
+  height: 50px;
+  line-height: 50px;
+  background-color: #42eff5;
+  color: black;
+  border: 3px solid rgba(190, 190, 190, .5);
+  border-radius: 10px;
+  text-align: center;
+  left: 480px;
+  font-size: 25px;
+`;
 const StyledMenuDiv = style.div`
   font-size: 2.0em;
   margin-bottom: 50px;
@@ -175,6 +188,8 @@ const ReservePage = (): JSX.Element => {
   const [endAirport, setEndAirport] = useState('');
   const [startDate, setStartDate] = useState('2021-09-20');
   const [startTime, setStartTime] = useState('09:00');
+  const [time, setTime] = useState(30);
+  const [timeText, setTimeText] = useState('00:00');
 
   const [ticketData, setTicketData] = useState([]);
   const [selectedTickets, setSelectedTickets] = useState([]);
@@ -236,6 +251,24 @@ const ReservePage = (): JSX.Element => {
       ]);
     }
   };
+  const calTime = (preTime: number) => {
+    if (preTime === 0) {
+      history.push('/');
+      return;
+    }
+
+    const nextTime = preTime - 1;
+
+    setTime(nextTime);
+    if (nextTime >= 10) {
+      setTimeText(`00:${nextTime.toString()}`);
+    } else {
+      setTimeText(`00:0${nextTime.toString()}`);
+    }
+    setTimeout(() => {
+      calTime(nextTime);
+    }, 1000);
+  };
 
   useEffect(() => {
     if (!memberReducer.accessToken) {
@@ -243,6 +276,10 @@ const ReservePage = (): JSX.Element => {
       history.push('/login');
       return;
     }
+
+    setTimeout(() => {
+      calTime(time);
+    }, 1000);
 
     getAirlineData();
     getStartAirportData();
@@ -359,6 +396,7 @@ const ReservePage = (): JSX.Element => {
 
   return (
     <div>
+      <StyledTimeDiv>{timeText}</StyledTimeDiv>
       <StyledMenuDiv>
         <b>예약하기(항공권)</b>
       </StyledMenuDiv>

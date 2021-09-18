@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import styled from 'styled-components';
@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import CustomCard from '../components/customCard';
 import CircleCard from '../components/circleCard';
 import { RootReducerType } from '../state/store';
+import SimpleModal from '../components/modal';
 
 const StyledMainDiv = styled.div`
   width: 100%;
@@ -36,9 +37,47 @@ const StyledCopyrightDiv = styled.div`
 function MainPage(): JSX.Element {
   const history = useHistory();
   const memberReducer = useSelector((state: RootReducerType) => state.memberReducer);
+  const [seq, setSeq] = useState(1);
+  const [open, setOpen] = useState(false);
 
   const reservationEvent = () => {
-    history.push('/reserve');
+    if (!memberReducer.accessToken) {
+      alert('로그인 후 이용이 가능합니다.');
+      return;
+    }
+
+    const socket = io('ws://localhost:8080', {
+      transports: ['websocket'],
+      jsonp: false,
+      query: {
+        token: memberReducer.accessToken,
+      },
+    });
+    socket.emit('enterWaiting');
+    setOpen(true);
+
+    const id = window.setInterval(() => {
+      if (socket) {
+        socket.emit('check');
+      }
+    }, 300);
+
+    socket.on('check', (data: any) => {
+      if (data.isContained) {
+        setSeq(data.index + 1);
+      }
+    });
+
+    socket.on('enterTicketing', () => {
+      setOpen(false);
+      socket.disconnect();
+      window.clearInterval(id);
+      history.push('/reserve');
+    });
+  };
+
+  const onCloseClick = () => {
+    return null;
   };
 
   return (
@@ -60,20 +99,7 @@ function MainPage(): JSX.Element {
           icon="default"
           color="#494AE6"
           onClickEvent={() => {
-            if (!memberReducer.accessToken) {
-              alert('로그인 후 이용이 가능합니다.');
-              return;
-            }
-
-            const socket = io('ws://localhost:8080', {
-              transports: ['websocket'],
-              jsonp: false,
-              query: {
-                token: memberReducer.accessToken,
-              },
-            });
-
-            socket.emit('enterReservation');
+            alert('준비중입니다...');
           }}
         />
       </StyledCardDiv>
@@ -102,6 +128,7 @@ function MainPage(): JSX.Element {
       <StyledCopyrightDiv>
         <b style={{ float: 'right' }}> KORAILI | Copyright 2021.KangLim. All rights reserved.</b>
       </StyledCopyrightDiv>
+      <SimpleModal seq={seq} open={open} onClickEvent={onCloseClick} />
     </StyledMainDiv>
   );
 }

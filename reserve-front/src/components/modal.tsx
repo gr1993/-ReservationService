@@ -31,15 +31,16 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function SimpleModal() {
+interface Props {
+  seq: number;
+  open: boolean;
+  onClickEvent: () => void;
+}
+
+const SimpleModal: React.FC<Props> = ({ seq, open, onClickEvent }) => {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
@@ -53,6 +54,7 @@ export default function SimpleModal() {
           className="ButtonStyle"
           variant="contained"
           color="default"
+          onClick={onClickEvent}
         >
           닫기
         </Button>
@@ -72,7 +74,7 @@ export default function SimpleModal() {
         }}
       >
         <span style={{ color: 'white', fontSize: '0.9em' }}>
-          현재 <b style={{ color: 'yellow' }}>579</b>명이 접속대기 중이며, 순서에 따라 자동
+          현재 <b style={{ color: 'yellow' }}>{seq}</b>번째로 접속대기 중이며, 순서에 따라 자동
           접속됩니다.
         </span>
       </div>
@@ -97,11 +99,12 @@ export default function SimpleModal() {
   return (
     <Modal
       open={open}
-      onClose={handleClose}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
     >
       {body}
     </Modal>
   );
-}
+};
+
+export default SimpleModal;

@@ -57,7 +57,6 @@ function App(): JSX.Element {
           </Switch>
         </StyledContentDiv>
       </StyledMainDiv>
-      <SimpleModal />
     </BrowserRouter>
   );
 }
