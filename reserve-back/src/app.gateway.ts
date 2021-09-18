@@ -7,32 +7,39 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
+import { AuthService } from './auth/auth.service';
 import { RedisCacheService } from './cache/redisCache.service';
+
+let test = '';
 
 @WebSocketGateway()
 export class AppGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-  constructor(private cacheService: RedisCacheService) {}
+  constructor(
+    private cacheService: RedisCacheService,
+    private authService: AuthService,
+  ) {}
 
   @WebSocketServer() server: Server;
 
-  @SubscribeMessage('msgToServer')
-  handleMessage(client: Socket, payload: string): void {
-    this.server.emit('msgToClient', payload);
+  @SubscribeMessage('enterReservation')
+  async handleMessage(client: Socket, payload: string) {
+    // eslint-disable-next-line prettier/prettier
+    const token = client.handshake.query.token as string;
+    const member = await this.authService.verify(token);
+
+    test = member.id;
+
+    this.cacheService.insertWaiting(member.id);
   }
 
   afterInit(server: Server) {
-    this.cacheService.set('test', 'data2');
-    this.cacheService.get('test').then((data) => {
-      const tees = data;
-      const test2 = '';
-    });
     return null;
   }
 
   handleDisconnect(client: Socket) {
-    return null;
+    this.cacheService.removeWaiting(test);
   }
 
   handleConnection(client: Socket, ...args: any[]) {

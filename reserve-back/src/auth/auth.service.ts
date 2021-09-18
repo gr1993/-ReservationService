@@ -50,4 +50,12 @@ export class AuthService {
       throw Error('패스워드가 일치하지 않습니다.');
     }
   }
+
+  async verify(token: string) {
+    try {
+      return await this.jwtService.verifyAsync(token);
+    } catch {
+      return null;
+    }
+  }
 }
