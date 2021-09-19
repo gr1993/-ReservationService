@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
 import CustomCard from '../components/customCard';
 import CircleCard from '../components/circleCard';
 import { RootReducerType } from '../state/store';
@@ -39,6 +40,7 @@ function MainPage(): JSX.Element {
   const memberReducer = useSelector((state: RootReducerType) => state.memberReducer);
   const [seq, setSeq] = useState(1);
   const [open, setOpen] = useState(false);
+  const [socket, setSocket] = useState<Socket<DefaultEventsMap, DefaultEventsMap> | null>(null);
 
   const reservationEvent = () => {
     if (!memberReducer.accessToken) {
@@ -46,38 +48,45 @@ function MainPage(): JSX.Element {
       return;
     }
 
-    const socket = io('ws://localhost:8080', {
+    const localSocket = io('ws://localhost:8080', {
       transports: ['websocket'],
       jsonp: false,
       query: {
         token: memberReducer.accessToken,
       },
     });
-    socket.emit('enterWaiting');
+
+    localSocket.emit('enterWaiting');
     setOpen(true);
 
     const id = window.setInterval(() => {
-      if (socket) {
-        socket.emit('check');
+      if (localSocket) {
+        localSocket.emit('check');
       }
     }, 300);
 
-    socket.on('check', (data: any) => {
+    localSocket.on('check', (data: any) => {
       if (data.isContained) {
         setSeq(data.index + 1);
       }
     });
 
-    socket.on('enterTicketing', () => {
+    localSocket.on('enterTicketing', () => {
       setOpen(false);
-      socket.disconnect();
+      localSocket.disconnect();
       window.clearInterval(id);
       history.push('/reserve');
     });
+
+    setSocket(localSocket);
   };
 
   const onCloseClick = () => {
-    return null;
+    setOpen(false);
+    if (!socket) {
+      return;
+    }
+    socket.disconnect();
   };
 
   return (
