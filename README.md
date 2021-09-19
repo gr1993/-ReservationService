@@ -34,7 +34,7 @@
 3. TypeORM
 4. WebSocket
 5. Mysql, Redis
-6. AWS 환경
+6. AWS 환경(Terraform 사용)
 
 
 ### AWS 인프라 구성도

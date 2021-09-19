@@ -1,4 +1,4 @@
-# 프로젝트 구축을 위해 사용한 것들
+# front-end 프로젝트 구축을 위해 사용한 것들
 
 ## Used Site
 
@@ -7,10 +7,16 @@
 3. https://color.adobe.com/ko/create/color-wheel (색조합)
 
 
-## Used Library
+## Main Used Library
 
-1. create-react-app
-2. styled-components
+1. typescript
+2. create-react-app
+3. react
+4. redux
+5. styled-components
+6. material-ui
+7. axios
+8. socket.io-client
 
 
 ## Used Visual Studio Code Plugin
