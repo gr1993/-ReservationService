@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "b" {
-  bucket = "reserve-bucket-pgr"
+  bucket = var.domain_url
   policy = file("s3Policy.json")
 
   website {
