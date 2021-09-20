@@ -6,3 +6,9 @@ node_modules/
 # config
 *.env
 ormconfig.ts
+
+# infra file
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/
