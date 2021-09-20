@@ -27,3 +27,16 @@
   * npm info "eslint-config-airbnb@latest" peerDependencies
   * npx install-peerdeps --dev eslint-config-airbnb
   * npm install --legacy-peer-deps
+
+## 설정
+
+src/helper/axiosHelper 에서 DOMAIN 변수 수정: api 서버 url
+
+## 배포
+
+```bash
+npm run build
+cd build
+aws s3 cp SOURCE_DIR  s3://DEST_BUCKET// --recursive
+aws s3 sync SOURCE_DIR s3://DEST_BUCKET/
+```
