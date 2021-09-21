@@ -1,0 +1,19 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/webapp
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+hooks:
+  AfterInstall:
+    - location: scripts/appInstall.sh
+      runas: ec2-user
+      timeout: 600
+  ApplicationStart:
+    - location: scripts/appRestart.sh
+      runas: ec2-user
+      timeout: 60
