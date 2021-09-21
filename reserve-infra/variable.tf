@@ -5,7 +5,7 @@ variable "domain_url" {
 
 variable "ami_id" {
   type     = string
-  default  = "ami-082c677f74018d4e9"
+  default  = "ami-0c096e23886e1e7b3"
 }
 
 variable "key_name" {
