@@ -38,7 +38,7 @@
 
 
 ### AWS 인프라 구성도
-![인프라 구성도](./InfraImage2.png)
+![인프라 구성도](./InfraImage3.png)
 
 * 클라이언트는 S3, 서버는 EC2 AutoScaling Group에 배포
 * 서버배포는 CodeDeploy 사용
