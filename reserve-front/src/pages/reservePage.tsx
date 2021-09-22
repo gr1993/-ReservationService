@@ -31,8 +31,9 @@ const StyledTimeDiv = style.div`
   border: 3px solid rgba(190, 190, 190, .5);
   border-radius: 10px;
   text-align: center;
-  left: 480px;
   font-size: 25px;
+  left:50%; 
+  transform:translateX(-50%);
 `;
 const StyledMenuDiv = style.div`
   font-size: 2.0em;
