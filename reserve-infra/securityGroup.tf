@@ -1,10 +1,7 @@
-resource "aws_default_vpc" "default" {
-}
-
 resource "aws_security_group" "allow_http" {
   name        = "allow_http"
   description = "Allow http inbound traffic"
-  vpc_id      = aws_default_vpc.default.id
+  vpc_id      = var.vpc_id
 }
 
 resource "aws_security_group_rule" "ssh" {

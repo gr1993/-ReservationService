@@ -14,3 +14,8 @@ resource "aws_autoscaling_group" "asg_server" {
   min_size          		= var.min_size
 	launch_configuration	= aws_launch_configuration.server.name
 }
+
+resource "aws_autoscaling_attachment" "asg_attachment_elb" {
+  autoscaling_group_name = aws_autoscaling_group.asg_server.id
+  alb_target_group_arn = aws_lb_target_group.back_end_tg.arn
+}

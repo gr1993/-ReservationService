@@ -5,7 +5,7 @@ variable "domain_url" {
 
 variable "ami_id" {
   type     = string
-  default  = "ami-0c096e23886e1e7b3"
+  default  = "ami-06a8002305eaadd22"
 }
 
 variable "key_name" {
@@ -31,4 +31,14 @@ variable "max_size" {
 variable "min_size" {
   type     = number
   default  = 1
+}
+
+variable "vpc_id" {
+  type     = string
+  default  = "vpc-acbf79c7"
+}
+
+variable "subnet_ids" {
+  type     = list(string)
+  default  = ["subnet-6435c50f", "subnet-b5c696e9"]
 }
