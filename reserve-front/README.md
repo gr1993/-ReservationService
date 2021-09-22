@@ -30,7 +30,8 @@
 
 ## 설정
 
-src/helper/axiosHelper 에서 DOMAIN 변수 수정: api 서버 url
+src/helper/axiosHelper : api http url (DOMAIN 변수)
+src/pages/mainPage : api websocket url
 
 ## 배포
 

@@ -31,3 +31,43 @@
   * npm info "eslint-config-airbnb@latest" peerDependencies
   * npx install-peerdeps --dev eslint-config-airbnb
   * npm install --legacy-peer-deps
+
+
+## 설정 파일 추가
+
+> .env : 각종 설정
+
+```bash
+REDIS_PORT=6379
+REDIS_HOST=localhost
+CACHE_TTL=3600
+WAIT_ROOM_MEMBER_COUNT=1
+CORS_ORIGIN=http://localhost
+JWT_SECRET_KEY=EXAMPLE_KEY
+```
+
+> ormconfig.ts : DB설정
+
+```javascript
+import { ConnectionOptions } from 'typeorm';
+
+const config: ConnectionOptions = {
+  type: 'mysql',
+  host: 'localhost',
+  port: 3306,
+  username: '',
+  password: '',
+  database: '',
+  entities: ['dist/src/**/*.entity.js'],
+  synchronize: false,
+  logging: 'all',
+  migrations: ['dist/src/migrations/*.js'],
+  cli: {
+    migrationsDir: 'src/migrations',
+  },
+};
+
+export default config;
+```
+
+> appspec.yml : codeDeploy 사용 시 필요한 파일
