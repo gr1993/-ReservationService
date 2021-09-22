@@ -1,7 +1,7 @@
 # 항공예약 시스템
 
 ### 예약시스템 시연 영상
-유튜브 영상 임베드 링크
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ewfOgQv2uoQ/0.jpg)](https://www.youtube.com/watch?v=ewfOgQv2uoQ)
 
 ### 기능
 1. 회원가입
