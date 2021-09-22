@@ -40,6 +40,6 @@
 ### AWS 인프라 구성도
 ![인프라 구성도](./InfraImage3.png)
 
-* 클라이언트는 S3, 서버는 EC2 AutoScaling Group에 배포
+* Front-End 서버는 S3, Back-End 서버는 AutoScaling Group(EC2)에 배포
 * 서버배포는 CodeDeploy 사용
-* 인프라코드는 terraform 사용
+* 인프라코드(Iac)는 Terraform 사용
